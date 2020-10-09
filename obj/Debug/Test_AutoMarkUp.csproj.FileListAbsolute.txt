@@ -1,0 +1,9 @@
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\bin\Debug\Test_AutoMarkUp.rsaddin
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\bin\Debug\Test_AutoMarkUp.dll
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\bin\Debug\Test_AutoMarkUp.pdb
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.csprojAssemblyReference.cache
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.csproj.CoreCompileInputs.cache
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.dll
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.pdb
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.Form1.resources
+E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.csproj.GenerateResource.cache
