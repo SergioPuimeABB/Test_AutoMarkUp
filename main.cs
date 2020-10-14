@@ -12,7 +12,7 @@ using ABB.Robotics.RobotStudio.Stations.Forms;
 
 namespace Test_AutoMarkUp
 {
-    class main
+    public class main
     {
         // This is the entry point which will be called when the Add-in is loaded
         public static void AddinMain()
@@ -36,8 +36,10 @@ namespace Test_AutoMarkUp
                 tw.PreferredSize = new Size(tw_width, 330);
                 UIEnvironment.Windows.AddDocked(tw, System.Windows.Forms.DockStyle.Top, UIEnvironment.Windows["ObjectBrowser"] as ToolWindow);
 
-                Form1 form = new Form1();
-                form.Show();
+                //Form1 form = new Form1();
+                //form.Show();
+
+                string start_num = "10";
 
                 PositionControl pos_control = new PositionControl
                 {
@@ -54,7 +56,7 @@ namespace Test_AutoMarkUp
                     ReadOnly = false,
                     RefCoordSys = null,
                     ShowLabel = true,
-                    Size = new Size(tw_width+10, 34),
+                    Size = new Size(tw_width + 10, 34),
                     TabIndex = 1,
                     Text = "positionControl1",
                     VerticalLayout = false
@@ -65,16 +67,18 @@ namespace Test_AutoMarkUp
                 {
                     Text = "Prefix:",
                     Location = new Point(8, 56),
-                    Size = new Size(37,34)
+                    Size = new Size(37, 34)
                 };
                 tw.Control.Controls.Add(lbl_prefix);
 
 
                 TextBox tb_prefix = new TextBox
                 {
-                    Location = new Point(45,50),
-                    Size = new Size (185,34),
+                    Location = new Point(45, 50),
+                    Size = new Size(tw_width - 27, 34),
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
                     Text = "pt_"
+
                 };
                 tw.Control.Controls.Add(tb_prefix);
 
@@ -91,26 +95,28 @@ namespace Test_AutoMarkUp
                 TextBox tb_suffix = new TextBox
                 {
                     Location = new Point(45, 82),
-                    Size = new Size(185, 34)
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                    Size = new Size(tw_width - 27, 34)
                 };
                 tw.Control.Controls.Add(tb_suffix);
 
-                
+
                 Label lbl_startnumber = new Label
                 {
                     Text = "Start n.:",
                     Location = new Point(8, 120),
-                    Size = new Size(45, 34)
+                    Size = new Size(45, 30)
                 };
                 tw.Control.Controls.Add(lbl_startnumber);
 
                 TextBox tb_startnumber = new TextBox();
                 tb_startnumber.Location = new Point(55, 114);
                 tb_startnumber.Size = new Size(40, 34);
+                tb_startnumber.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 tb_startnumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
                 tb_startnumber.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
                 tb_startnumber.KeyPress += new KeyPressEventHandler(tb_test_KeyPress);
-                tb_startnumber.Text = "10";
+                tb_startnumber.Text = start_num;
                 tw.Control.Controls.Add(tb_startnumber);
 
                 RadioButton rb_10 = new RadioButton
@@ -123,51 +129,23 @@ namespace Test_AutoMarkUp
                 };
                 tw.Control.Controls.Add(rb_10);
 
-                RadioButton rb_100 = new RadioButton
-                {
-                    Location = new Point(150, 110),
-                    Name = "100",
-                    Size = new Size(45, 34),
-                    Text = "100"
-                };
+                RadioButton rb_100 = new RadioButton();
+                rb_100.Location = new Point(150, 110);
+                rb_100.Name = "100";
+                rb_100.Size = new Size(45, 34);
+                rb_100.Text = "100";
+                rb_100.CheckedChanged += new System.EventHandler(rb_100_CheckedChanged);
                 tw.Control.Controls.Add(rb_100);
 
                 TextBox tb_points_list = new TextBox
                 {
-                    Location = new Point(8, 150),
+                    Location = new Point(8, 152),
                     Multiline = true,
                     Name = "Points List",
-                    Size = new Size(tw_width, 150)
+                    Size = new Size(tw_width + 10, 100),
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
                 };
                 tw.Control.Controls.Add(tb_points_list);
-
-
-                //RadioButton rb_1000 = new RadioButton
-                //{
-                //    Location = new Point(200, 110),
-                //    Name = "1000",
-                //    Size = new Size(55, 34),
-                //    Text = "1000"
-                //};
-                //tw.Control.Controls.Add(rb_1000);
-
-                //Label lbl_lbl10 = new Label
-                //{
-                //    Text = "10",
-                //    Location = new Point(150, 114),
-                //    Size = new Size(37, 34)
-                //};
-                //tw.Control.Controls.Add(lbl_lbl10);
-
-                //TextBox tb_test = new TextBox();
-                ////tb_test.KeyPress += new KeyPressEventHandler(tb_test_TextChanged);
-                //tb_test.KeyPress += new System.Windows.Forms.KeyPressEventHandler(tb_test_KeyPress);
-                //tb_test.Location = new Point(78, 214);
-                //tb_test.Size = new Size(40, 34);
-                //tw.Control.Controls.Add(tb_test);
-
-
-
             }
 
             catch (Exception execption)
@@ -205,7 +183,15 @@ namespace Test_AutoMarkUp
         //    //    e.Handled = true;
         //    //}
         //}
-        
 
+        public void est()
+        {
+            string tmp1 = "tmp1";
+        }
+
+
+        private static void rb_100_CheckedChanged(object sender, EventArgs e)
+        {
+        }
     }
 }
