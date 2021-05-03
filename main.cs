@@ -17,7 +17,7 @@ namespace Test_AutoMarkUp
         // This is the entry point which will be called when the Add-in is loaded
         public static void AddinMain()
         {
-            Logger.AddMessage(new LogMessage("AutoMarkUps Add-in loaded ... 2020.10.08  12:20 ", "AutoMarkUps Add-in"));
+            Logger.AddMessage(new LogMessage("AutoMarkUps Add-in loaded ... 2021.05.03  10:58 ", "AutoMarkUps Add-in"));
 
             AutoMarkUpsToolWindow();
         }
@@ -36,8 +36,8 @@ namespace Test_AutoMarkUp
                 tw.PreferredSize = new Size(tw_width, 330);
                 UIEnvironment.Windows.AddDocked(tw, System.Windows.Forms.DockStyle.Top, UIEnvironment.Windows["ObjectBrowser"] as ToolWindow);
 
-                //Form1 form = new Form1();
-                //form.Show();
+                Form1 form = new Form1();
+                form.Show();
 
                 string start_num = "10";
 
@@ -63,6 +63,8 @@ namespace Test_AutoMarkUp
                 };
                 tw.Control.Controls.Add(pos_control);
 
+                pos_control.TextChanged += new EventHandler(pos_control_TextChanged);
+
                 Label lbl_prefix = new Label
                 {
                     Text = "Prefix:",
@@ -70,7 +72,6 @@ namespace Test_AutoMarkUp
                     Size = new Size(37, 34)
                 };
                 tw.Control.Controls.Add(lbl_prefix);
-
 
                 TextBox tb_prefix = new TextBox
                 {
@@ -82,7 +83,6 @@ namespace Test_AutoMarkUp
                 };
                 tw.Control.Controls.Add(tb_prefix);
 
-
                 Label lbl_suffix = new Label
                 {
                     Text = "Suffix:",
@@ -90,7 +90,6 @@ namespace Test_AutoMarkUp
                     Size = new Size(37, 34)
                 };
                 tw.Control.Controls.Add(lbl_suffix);
-
 
                 TextBox tb_suffix = new TextBox
                 {
@@ -109,6 +108,7 @@ namespace Test_AutoMarkUp
                 };
                 tw.Control.Controls.Add(lbl_startnumber);
 
+                
                 TextBox tb_startnumber = new TextBox();
                 tb_startnumber.Location = new Point(55, 114);
                 tb_startnumber.Size = new Size(40, 34);
@@ -119,6 +119,7 @@ namespace Test_AutoMarkUp
                 tb_startnumber.Text = start_num;
                 tw.Control.Controls.Add(tb_startnumber);
 
+                
                 RadioButton rb_10 = new RadioButton
                 {
                     Location = new Point(105, 110),
@@ -129,6 +130,7 @@ namespace Test_AutoMarkUp
                 };
                 tw.Control.Controls.Add(rb_10);
 
+                
                 RadioButton rb_100 = new RadioButton();
                 rb_100.Location = new Point(150, 110);
                 rb_100.Name = "100";
@@ -137,15 +139,16 @@ namespace Test_AutoMarkUp
                 rb_100.CheckedChanged += new System.EventHandler(rb_100_CheckedChanged);
                 tw.Control.Controls.Add(rb_100);
 
-                TextBox tb_points_list = new TextBox
+                ListView lb_points_list = new ListView
                 {
                     Location = new Point(8, 152),
-                    Multiline = true,
-                    Name = "Points List",
                     Size = new Size(tw_width + 10, 100),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                    Name = "Points List"
+
                 };
-                tw.Control.Controls.Add(tb_points_list);
+                tw.Control.Controls.Add(lb_points_list);
+
             }
 
             catch (Exception execption)
@@ -193,5 +196,11 @@ namespace Test_AutoMarkUp
         private static void rb_100_CheckedChanged(object sender, EventArgs e)
         {
         }
+
+        private static void pos_control_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+
     }
 }

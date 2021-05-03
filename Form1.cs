@@ -20,7 +20,6 @@ namespace Test_AutoMarkUp
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -36,6 +35,13 @@ namespace Test_AutoMarkUp
         private void button1_Click(object sender, EventArgs e)
         {
             Logger.AddMessage(new LogMessage("Button 1 Clicked", "AutoMarkUps Add-in"));
+
+            listView1.Items.Add(textBox1.Text);
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
