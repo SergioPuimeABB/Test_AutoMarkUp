@@ -41,37 +41,61 @@ namespace Test_AutoMarkUp
 
                 string start_num = "10";
 
-                PositionControl pos_control = new PositionControl
-                {
-                    ErrorProviderControl = null,
-                    ExpressionErrorString = "Bad Expression",
-                    LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length,
-                    LabelText = "Corner Point",
-                    Location = new Point(8, 8),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                    MaxValueErrorString = "Value exceeds maximum",
-                    MinValueErrorString = "Value is below minimum",
-                    Name = "pos_control",
-                    NumTextBoxes = 3,
-                    ReadOnly = false,
-                    RefCoordSys = null,
-                    ShowLabel = true,
-                    Size = new Size(tw_width + 10, 34),
-                    TabIndex = 1,
-                    Text = "positionControl1",
-                    VerticalLayout = false
-                };
+                //PositionControl pos_control = new PositionControl
+                //{
+                //    ErrorProviderControl = null,
+                //    ExpressionErrorString = "Bad Expression",
+                //    LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length,
+                //    LabelText = "Position",
+                //    Location = new Point(8, 8),
+                //    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                //    MaxValueErrorString = "Value exceeds maximum",
+                //    MinValueErrorString = "Value is below minimum",
+                //    Name = "pos_control",
+                //    NumTextBoxes = 3,
+                //    ReadOnly = false,
+                //    RefCoordSys = null,
+                //    ShowLabel = true,
+                //    Size = new Size(tw_width + 10, 34),
+                //    TabIndex = 1,
+                //    Text = "positionControl1",
+                //    VerticalLayout = false
+                //};
+                //pos_control.TextChanged += new EventHandler(pos_control_TextChanged);
+                //pos_control.Click += new EventHandler(PickTargets);
+
+                PositionControl pos_control = new PositionControl();
+                pos_control.ErrorProviderControl = null;
+                pos_control.ExpressionErrorString = "Bad Expression";
+                pos_control.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
+                pos_control.LabelText = "Position";
+                pos_control.Location = new Point(8, 8);
+                pos_control.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                pos_control.MaxValueErrorString = "Value exceeds maximum";
+                pos_control.MinValueErrorString = "Value is below minimum";
+                pos_control.Name = "pos_control";
+                pos_control.NumTextBoxes = 3;
+                pos_control.ReadOnly = false;
+                pos_control.RefCoordSys = null;
+                pos_control.ShowLabel = true;
+                pos_control.Size = new Size(tw_width + 10, 34);
+                pos_control.TabIndex = 1;
+                pos_control.Text = "positionControl1";
+                pos_control.VerticalLayout = false;
+                pos_control.GotFocus += new EventHandler(PickTargets);
+                pos_control.Click += new EventHandler(PickTargets);
                 tw.Control.Controls.Add(pos_control);
 
-                pos_control.TextChanged += new EventHandler(pos_control_TextChanged);
-
+ 
                 Label lbl_prefix = new Label
                 {
                     Text = "Prefix:",
                     Location = new Point(8, 56),
                     Size = new Size(37, 34)
                 };
+                lbl_prefix.GotFocus += new EventHandler(PickTargets);
                 tw.Control.Controls.Add(lbl_prefix);
+
 
                 TextBox tb_prefix = new TextBox
                 {
@@ -113,10 +137,10 @@ namespace Test_AutoMarkUp
                 tb_startnumber.Location = new Point(55, 114);
                 tb_startnumber.Size = new Size(40, 34);
                 tb_startnumber.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                tb_startnumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-                tb_startnumber.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-                tb_startnumber.KeyPress += new KeyPressEventHandler(tb_test_KeyPress);
+                tb_startnumber.TextAlign = HorizontalAlignment.Right;
+                tb_startnumber.RightToLeft = RightToLeft.Yes;
                 tb_startnumber.Text = start_num;
+                tb_startnumber.KeyPress += new KeyPressEventHandler(tb_test_KeyPress);
                 tw.Control.Controls.Add(tb_startnumber);
 
                 
@@ -193,6 +217,8 @@ namespace Test_AutoMarkUp
         }
 
 
+
+
         private static void rb_100_CheckedChanged(object sender, EventArgs e)
         {
         }
@@ -201,6 +227,58 @@ namespace Test_AutoMarkUp
         {
         }
 
+
+        private static void PickTargets(object sender, EventArgs e)
+        {
+            //Begin UndoStep
+            Project.UndoContext.BeginUndoStep("MultipleTarget");
+            try
+            {
+                Logger.AddMessage(new LogMessage("Picked"));
+                //Initialize GraphicPicker
+                GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
+            }
+            catch (Exception ex)
+            {
+                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+                Logger.AddMessage(new LogMessage(ex.Message.ToString()));
+            }
+            finally
+            {
+                //End UndoStep
+                Project.UndoContext.EndUndoStep();
+
+            }
+        }
+        static void GraphicPicker_GraphicPick(object sender, GraphicPickEventArgs e)
+        {
+
+            //Station station = Project.ActiveProject as Station;
+            //string stepName = station.ActiveTask.GetValidRapidName("Target", "_", 10);
+
+            //Begin UndoStep
+            Project.UndoContext.BeginUndoStep("Pick Position");
+            try
+            {
+                GetPos(e.PickedPosition);
+            }
+            catch (Exception exception)
+            {
+                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+                Logger.AddMessage(new LogMessage(exception.Message.ToString()));
+            }
+            finally
+            {
+                //End UndoStep
+                Project.UndoContext.EndUndoStep();
+            }
+        }
+
+
+        private static void GetPos(Vector3 position)
+        {
+            Logger.AddMessage(new LogMessage(position.ToString()));
+        }
 
     }
 }

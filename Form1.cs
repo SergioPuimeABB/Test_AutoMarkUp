@@ -22,6 +22,7 @@ namespace Test_AutoMarkUp
         {
         }
 
+
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
@@ -42,6 +43,11 @@ namespace Test_AutoMarkUp
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_Click(object sender, EventArgs e)
+        {
+            Logger.AddMessage(new LogMessage("TexBox 1 Clicked", "AutoMarkUps Add-in"));
         }
     }
 }
