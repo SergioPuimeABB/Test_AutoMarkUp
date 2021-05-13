@@ -12,23 +12,25 @@ using ABB.Robotics.RobotStudio.Stations.Forms;
 
 namespace Test_AutoMarkUp
 {
-    public class main
+    public static class main
     {
+
+        public static PositionControl pos_control = new PositionControl();
+
         // This is the entry point which will be called when the Add-in is loaded
         public static void AddinMain()
         {
             Logger.AddMessage(new LogMessage("AutoMarkUps Add-in loaded ... 2021.05.03  10:58 ", "AutoMarkUps Add-in"));
 
             AutoMarkUpsToolWindow();
+
         }
 
-        public static void AutoMarkUpsToolWindow()
+        private static void AutoMarkUpsToolWindow()
         {
             Project.UndoContext.BeginUndoStep("ToolWindow Creation");
             try
             {
-                //((System.ComponentModel.ISupportInitialize)(pb_createBox)).BeginInit();
-
                 int tw_width = UIEnvironment.Windows["ObjectBrowser"].Control.Size.Width - 30;
 
                 ToolWindow tw = new ToolWindow("MyToolWindow_4");
@@ -36,35 +38,12 @@ namespace Test_AutoMarkUp
                 tw.PreferredSize = new Size(tw_width, 330);
                 UIEnvironment.Windows.AddDocked(tw, System.Windows.Forms.DockStyle.Top, UIEnvironment.Windows["ObjectBrowser"] as ToolWindow);
 
-                Form1 form = new Form1();
-                form.Show();
+                //Form1 form = new Form1();
+                //form.Show();
 
                 string start_num = "10";
 
-                //PositionControl pos_control = new PositionControl
-                //{
-                //    ErrorProviderControl = null,
-                //    ExpressionErrorString = "Bad Expression",
-                //    LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length,
-                //    LabelText = "Position",
-                //    Location = new Point(8, 8),
-                //    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                //    MaxValueErrorString = "Value exceeds maximum",
-                //    MinValueErrorString = "Value is below minimum",
-                //    Name = "pos_control",
-                //    NumTextBoxes = 3,
-                //    ReadOnly = false,
-                //    RefCoordSys = null,
-                //    ShowLabel = true,
-                //    Size = new Size(tw_width + 10, 34),
-                //    TabIndex = 1,
-                //    Text = "positionControl1",
-                //    VerticalLayout = false
-                //};
-                //pos_control.TextChanged += new EventHandler(pos_control_TextChanged);
-                //pos_control.Click += new EventHandler(PickTargets);
-
-                PositionControl pos_control = new PositionControl();
+                //PositionControl pos_control = new PositionControl();
                 pos_control.ErrorProviderControl = null;
                 pos_control.ExpressionErrorString = "Bad Expression";
                 pos_control.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
@@ -82,8 +61,9 @@ namespace Test_AutoMarkUp
                 pos_control.TabIndex = 1;
                 pos_control.Text = "positionControl1";
                 pos_control.VerticalLayout = false;
-                pos_control.GotFocus += new EventHandler(PickTargets);
-                pos_control.Click += new EventHandler(PickTargets);
+                //pos_control.GotFocus += new EventHandler(PickTargets);
+                //pos_control.MouseEnter += new EventHandler(PickTargets);
+                //pos_control.Click += new EventHandler(PickTargets);
                 tw.Control.Controls.Add(pos_control);
 
  
@@ -141,6 +121,9 @@ namespace Test_AutoMarkUp
                 tb_startnumber.RightToLeft = RightToLeft.Yes;
                 tb_startnumber.Text = start_num;
                 tb_startnumber.KeyPress += new KeyPressEventHandler(tb_test_KeyPress);
+                //
+                tb_startnumber.GotFocus += new EventHandler(PickTargets);
+                //
                 tw.Control.Controls.Add(tb_startnumber);
 
                 
@@ -211,7 +194,7 @@ namespace Test_AutoMarkUp
         //    //}
         //}
 
-        public void est()
+        public static void est()
         {
             string tmp1 = "tmp1";
         }
@@ -250,7 +233,8 @@ namespace Test_AutoMarkUp
 
             }
         }
-        static void GraphicPicker_GraphicPick(object sender, GraphicPickEventArgs e)
+
+        private static void GraphicPicker_GraphicPick(object sender, GraphicPickEventArgs e)
         {
 
             //Station station = Project.ActiveProject as Station;
@@ -275,9 +259,11 @@ namespace Test_AutoMarkUp
         }
 
 
-        private static void GetPos(Vector3 position)
+        public static void GetPos(Vector3 position)
         {
             Logger.AddMessage(new LogMessage(position.ToString()));
+            pos_control.SetFocus();
+
         }
 
     }
