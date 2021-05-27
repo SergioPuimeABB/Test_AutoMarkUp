@@ -9,20 +9,31 @@ using ABB.Robotics.RobotStudio.Environment;
 using ABB.Robotics.RobotStudio.Stations;
 using ABB.Robotics.RobotStudio.Stations.Forms;
 
+using Test_AutoMarkUp;
+
 
 namespace Test_AutoMarkUp
 {
     public static class main
     {
 
-        public static PositionControl pos_control = new PositionControl();
+        private static ToolWindow tw;
+
+        public static PositionControl positionControlPos = new PositionControl();
+
+        public static ListBox listBoxPointsList = new ListBox();
+
+        public static List<Vector3> listMarks = new List<Vector3>();
 
         // This is the entry point which will be called when the Add-in is loaded
         public static void AddinMain()
         {
             Logger.AddMessage(new LogMessage("AutoMarkUps Add-in loaded ... 2021.05.03  10:58 ", "AutoMarkUps Add-in"));
 
-            AutoMarkUpsToolWindow();
+            if (tw == null)
+            {
+                AutoMarkUpsToolWindow();
+            }
 
         }
 
@@ -33,7 +44,7 @@ namespace Test_AutoMarkUp
             {
                 int tw_width = UIEnvironment.Windows["ObjectBrowser"].Control.Size.Width - 30;
 
-                ToolWindow tw = new ToolWindow("MyToolWindow_4");
+                tw = new ToolWindow("MyToolWindow_4");
                 tw.Caption = "Reference ToolWindow.";
                 tw.PreferredSize = new Size(tw_width, 330);
                 UIEnvironment.Windows.AddDocked(tw, System.Windows.Forms.DockStyle.Top, UIEnvironment.Windows["ObjectBrowser"] as ToolWindow);
@@ -44,27 +55,27 @@ namespace Test_AutoMarkUp
                 string start_num = "10";
 
                 //PositionControl pos_control = new PositionControl();
-                pos_control.ErrorProviderControl = null;
-                pos_control.ExpressionErrorString = "Bad Expression";
-                pos_control.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
-                pos_control.LabelText = "Position";
-                pos_control.Location = new Point(8, 8);
-                pos_control.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                pos_control.MaxValueErrorString = "Value exceeds maximum";
-                pos_control.MinValueErrorString = "Value is below minimum";
-                pos_control.Name = "pos_control";
-                pos_control.NumTextBoxes = 3;
-                pos_control.ReadOnly = false;
-                pos_control.RefCoordSys = null;
-                pos_control.ShowLabel = true;
-                pos_control.Size = new Size(tw_width + 10, 34);
-                pos_control.TabIndex = 1;
-                pos_control.Text = "positionControl1";
-                pos_control.VerticalLayout = false;
+                positionControlPos.ErrorProviderControl = null;
+                positionControlPos.ExpressionErrorString = "Bad Expression";
+                positionControlPos.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
+                positionControlPos.LabelText = "Position";
+                positionControlPos.Location = new Point(8, 8);
+                positionControlPos.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                positionControlPos.MaxValueErrorString = "Value exceeds maximum";
+                positionControlPos.MinValueErrorString = "Value is below minimum";
+                positionControlPos.Name = "pos_control";
+                positionControlPos.NumTextBoxes = 3;
+                positionControlPos.ReadOnly = false;
+                positionControlPos.RefCoordSys = null;
+                positionControlPos.ShowLabel = true;
+                positionControlPos.Size = new Size(tw_width + 10, 34);
+                positionControlPos.TabIndex = 1;
+                positionControlPos.Text = "positionControl1";
+                positionControlPos.VerticalLayout = false;
                 //pos_control.GotFocus += new EventHandler(PickTargets);
                 //pos_control.MouseEnter += new EventHandler(PickTargets);
                 //pos_control.Click += new EventHandler(PickTargets);
-                tw.Control.Controls.Add(pos_control);
+                tw.Control.Controls.Add(positionControlPos);
 
  
                 Label lbl_prefix = new Label
@@ -73,7 +84,7 @@ namespace Test_AutoMarkUp
                     Location = new Point(8, 56),
                     Size = new Size(37, 34)
                 };
-                lbl_prefix.GotFocus += new EventHandler(PickTargets);
+                //lbl_prefix.GotFocus += new EventHandler(PickTargets);
                 tw.Control.Controls.Add(lbl_prefix);
 
 
@@ -82,8 +93,7 @@ namespace Test_AutoMarkUp
                     Location = new Point(45, 50),
                     Size = new Size(tw_width - 27, 34),
                     Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                    Text = "pt_"
-
+                    Text = "p_"
                 };
                 tw.Control.Controls.Add(tb_prefix);
 
@@ -95,12 +105,14 @@ namespace Test_AutoMarkUp
                 };
                 tw.Control.Controls.Add(lbl_suffix);
 
+
                 TextBox tb_suffix = new TextBox
                 {
                     Location = new Point(45, 82),
                     Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
                     Size = new Size(tw_width - 27, 34)
                 };
+                tb_suffix.GotFocus += new EventHandler(Release_PickTargets);
                 tw.Control.Controls.Add(tb_suffix);
 
 
@@ -126,27 +138,56 @@ namespace Test_AutoMarkUp
                 //
                 tw.Control.Controls.Add(tb_startnumber);
 
-                
-                RadioButton rb_10 = new RadioButton
+                Label labelNumIncrements = new Label
                 {
-                    Location = new Point(105, 110),
+                    Text = "Increments:",
+                    Location = new Point(105, 120),
+                    Size = new Size(65, 30)
+                };
+                tw.Control.Controls.Add(labelNumIncrements);
+
+                RadioButton radioButton_1 = new RadioButton
+                {
+                    Location = new Point(170, 110),
+                    Name = "1",
+                    Size = new Size(37, 34),
+                    Text = "1",
+                    Checked = false
+                };
+                tw.Control.Controls.Add(radioButton_1);
+
+                RadioButton radioButton_10 = new RadioButton
+                {
+                    Location = new Point(215, 110),
                     Name = "10",
                     Size = new Size(37, 34),
                     Text = "10",
                     Checked = true
                 };
-                tw.Control.Controls.Add(rb_10);
+                tw.Control.Controls.Add(radioButton_10);
 
                 
-                RadioButton rb_100 = new RadioButton();
-                rb_100.Location = new Point(150, 110);
-                rb_100.Name = "100";
-                rb_100.Size = new Size(45, 34);
-                rb_100.Text = "100";
-                rb_100.CheckedChanged += new System.EventHandler(rb_100_CheckedChanged);
-                tw.Control.Controls.Add(rb_100);
+                RadioButton radioButton_100 = new RadioButton();
+                radioButton_100.Location = new Point(260, 110);
+                radioButton_100.Name = "100";
+                radioButton_100.Size = new Size(45, 34);
+                radioButton_100.Text = "100";
+                radioButton_100.CheckedChanged += new System.EventHandler(radioButton_100_CheckedChanged);
+                tw.Control.Controls.Add(radioButton_100);
 
-                ListView lb_points_list = new ListView
+
+                //ListView lb_points_list = new ListView
+                //{
+                //    Location = new Point(8, 152),
+                //    Size = new Size(tw_width + 10, 100),
+                //    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                //    Name = "Points List"
+
+                //};
+                //tw.Control.Controls.Add(lb_points_list);
+
+
+                listBoxPointsList = new ListBox
                 {
                     Location = new Point(8, 152),
                     Size = new Size(tw_width + 10, 100),
@@ -154,7 +195,7 @@ namespace Test_AutoMarkUp
                     Name = "Points List"
 
                 };
-                tw.Control.Controls.Add(lb_points_list);
+                tw.Control.Controls.Add(listBoxPointsList);
 
             }
 
@@ -202,7 +243,7 @@ namespace Test_AutoMarkUp
 
 
 
-        private static void rb_100_CheckedChanged(object sender, EventArgs e)
+        private static void radioButton_100_CheckedChanged(object sender, EventArgs e)
         {
         }
 
@@ -217,8 +258,8 @@ namespace Test_AutoMarkUp
             Project.UndoContext.BeginUndoStep("MultipleTarget");
             try
             {
+
                 Logger.AddMessage(new LogMessage("Picked"));
-                //Initialize GraphicPicker
                 GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
             }
             catch (Exception ex)
@@ -234,6 +275,33 @@ namespace Test_AutoMarkUp
             }
         }
 
+        // Don't work
+        private static void Release_PickTargets(object sender, EventArgs e)
+        {
+            //Begin UndoStep
+            Project.UndoContext.BeginUndoStep("MultipleTarget");
+            try
+            {
+                Logger.AddMessage(new LogMessage("Released Picked"));
+                GraphicPicker.GraphicPick -= new GraphicPickEventHandler(GraphicPicker_GraphicPick);
+
+            }
+            catch (Exception ex)
+            {
+                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+                Logger.AddMessage(new LogMessage(ex.Message.ToString()));
+            }
+            finally
+            {
+                //End UndoStep
+                Project.UndoContext.EndUndoStep();
+
+            }
+        }
+
+
+
+
         private static void GraphicPicker_GraphicPick(object sender, GraphicPickEventArgs e)
         {
 
@@ -245,6 +313,31 @@ namespace Test_AutoMarkUp
             try
             {
                 GetPos(e.PickedPosition);
+                AddPos(e.PickedPosition);
+            }
+            catch (Exception exception)
+            {
+                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+                Logger.AddMessage(new LogMessage(exception.Message.ToString()));
+            }
+            finally
+            {
+                //End UndoStep
+                Project.UndoContext.EndUndoStep();
+            }
+        }
+
+        private static void Release_GraphicPick(object sender, GraphicPickEventArgs e)
+        {
+
+            //Station station = Project.ActiveProject as Station;
+            //string stepName = station.ActiveTask.GetValidRapidName("Target", "_", 10);
+
+            //Begin UndoStep
+            Project.UndoContext.BeginUndoStep("Release Pick Position");
+            try
+            {
+                Logger.AddMessage(new LogMessage("Pick Released"));
             }
             catch (Exception exception)
             {
@@ -262,8 +355,19 @@ namespace Test_AutoMarkUp
         public static void GetPos(Vector3 position)
         {
             Logger.AddMessage(new LogMessage(position.ToString()));
-            pos_control.SetFocus();
+            positionControlPos.SetFocus();
+        }
 
+        private static void AddPos(Vector3 position)
+        {
+            listBoxPointsList.SelectedIndices.Clear();
+            listMarks.Add(position);
+            listBoxPointsList.Items.Add(position);
+            listBoxPointsList.SelectedIndex = listBoxPointsList.Items.Count - 1;
+            positionControlPos.Value = position;
+            positionControlPos.SetFocus();
+            Logger.AddMessage(new LogMessage("ListMarks " + listMarks.Count.ToString()));
+            
         }
 
     }
