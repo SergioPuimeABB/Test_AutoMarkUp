@@ -14,7 +14,7 @@ using Test_AutoMarkUp;
 
 namespace Test_AutoMarkUp
 {
-    public static class main
+    public class main
     {
 
         private static ToolWindow tw;
@@ -22,6 +22,25 @@ namespace Test_AutoMarkUp
         public static PositionControl positionControlPos = new PositionControl();
 
         public static ListBox listBoxPointsList = new ListBox();
+
+        public static TextBox tb_prefix = new TextBox();
+
+        public static TextBox tb_suffix = new TextBox();
+
+        public static TextBox tb_startnumber = new TextBox();
+
+        public static RadioButton radioButton_1 = new RadioButton();
+
+        public static RadioButton radioButton_10 = new RadioButton();
+
+        public static RadioButton radioButton_100 = new RadioButton();
+
+        public static ObjectSelectionControl IncrementSteps = new ObjectSelectionControl();
+
+        public static NumericTextBox NumericTextBoxStartWith = new NumericTextBox();
+
+        public static int MarkNumber = 1;
+
 
         public static List<Vector3> listMarks = new List<Vector3>();
 
@@ -77,103 +96,119 @@ namespace Test_AutoMarkUp
                 //pos_control.Click += new EventHandler(PickTargets);
                 tw.Control.Controls.Add(positionControlPos);
 
- 
+
                 Label lbl_prefix = new Label
                 {
-                    Text = "Prefix:",
-                    Location = new Point(8, 56),
-                    Size = new Size(37, 34)
+                    Text = "Name Prefix",
+                    Location = new Point(8, 50),
+                    Size = new Size(200, 14)
                 };
                 //lbl_prefix.GotFocus += new EventHandler(PickTargets);
                 tw.Control.Controls.Add(lbl_prefix);
 
 
-                TextBox tb_prefix = new TextBox
-                {
-                    Location = new Point(45, 50),
-                    Size = new Size(tw_width - 27, 34),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                    Text = "p_"
-                };
+                tb_prefix.Location = new Point(8, 65);
+                tb_prefix.Size = new Size(tw_width + 10, 34);
+                tb_prefix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                tb_prefix.Text = "p_";
                 tw.Control.Controls.Add(tb_prefix);
+
+
 
                 Label lbl_suffix = new Label
                 {
-                    Text = "Suffix:",
-                    Location = new Point(8, 88),
-                    Size = new Size(37, 34)
+                    Text = "Name Suffix",
+                    Location = new Point(8, 95),
+                    Size = new Size(200, 14)
                 };
                 tw.Control.Controls.Add(lbl_suffix);
 
-
-                TextBox tb_suffix = new TextBox
-                {
-                    Location = new Point(45, 82),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                    Size = new Size(tw_width - 27, 34)
-                };
+                tb_suffix.Location = new Point(8, 110);
+                tb_suffix.Size = new Size(tw_width + 10, 34);
+                tb_suffix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 tb_suffix.GotFocus += new EventHandler(Release_PickTargets);
                 tw.Control.Controls.Add(tb_suffix);
 
 
-                Label lbl_startnumber = new Label
-                {
-                    Text = "Start n.:",
-                    Location = new Point(8, 120),
-                    Size = new Size(45, 30)
-                };
-                tw.Control.Controls.Add(lbl_startnumber);
-
-                
-                TextBox tb_startnumber = new TextBox();
-                tb_startnumber.Location = new Point(55, 114);
-                tb_startnumber.Size = new Size(40, 34);
-                tb_startnumber.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                tb_startnumber.TextAlign = HorizontalAlignment.Right;
-                tb_startnumber.RightToLeft = RightToLeft.Yes;
-                tb_startnumber.Text = start_num;
-                tb_startnumber.KeyPress += new KeyPressEventHandler(tb_test_KeyPress);
-                //
-                tb_startnumber.GotFocus += new EventHandler(PickTargets);
-                //
-                tw.Control.Controls.Add(tb_startnumber);
-
                 Label labelNumIncrements = new Label
                 {
-                    Text = "Increments:",
-                    Location = new Point(105, 120),
-                    Size = new Size(65, 30)
+                    Text = "Increment",
+                    Location = new Point(8, 140),
+                    Size = new Size(80, 14)
                 };
-                tw.Control.Controls.Add(labelNumIncrements);
+                //tw.Control.Controls.Add(labelNumIncrements);
 
-                RadioButton radioButton_1 = new RadioButton
-                {
-                    Location = new Point(170, 110),
-                    Name = "1",
-                    Size = new Size(37, 34),
-                    Text = "1",
-                    Checked = false
-                };
-                tw.Control.Controls.Add(radioButton_1);
 
-                RadioButton radioButton_10 = new RadioButton
-                {
-                    Location = new Point(215, 110),
-                    Name = "10",
-                    Size = new Size(37, 34),
-                    Text = "10",
-                    Checked = true
-                };
-                tw.Control.Controls.Add(radioButton_10);
+                IncrementSteps.Location = new Point(8, 140);
+                IncrementSteps.Size = new Size(70, 35);
+                IncrementSteps.AutoSelectNextControl = true;
+                IncrementSteps.LabelText = "Increment";
+                //IncrementSteps.
+                tw.Control.Controls.Add(IncrementSteps);
 
-                
-                RadioButton radioButton_100 = new RadioButton();
-                radioButton_100.Location = new Point(260, 110);
-                radioButton_100.Name = "100";
-                radioButton_100.Size = new Size(45, 34);
-                radioButton_100.Text = "100";
-                radioButton_100.CheckedChanged += new System.EventHandler(radioButton_100_CheckedChanged);
-                tw.Control.Controls.Add(radioButton_100);
+                //Label lbl_startnumber = new Label
+                //{
+                //    Text = "Start with:",
+                //    Location = new Point(100, 140),
+                //    Size = new Size(80, 14)
+                //};
+                //tw.Control.Controls.Add(lbl_startnumber);
+
+                NumericTextBoxStartWith.Location = new Point(100, 140);
+                NumericTextBoxStartWith.Size = new Size(70, 35);
+                NumericTextBoxStartWith.LabelText = "Start with:";
+                tw.Control.Controls.Add(NumericTextBoxStartWith);
+
+
+
+
+
+
+
+
+                ////TextBox tb_startnumber = new TextBox();
+                //tb_startnumber.Location = new Point(55, 210);
+                //tb_startnumber.Size = new Size(40, 34);
+                //tb_startnumber.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                //tb_startnumber.TextAlign = HorizontalAlignment.Right;
+                //tb_startnumber.RightToLeft = RightToLeft.Yes;
+                //tb_startnumber.Text = start_num;
+                //tb_startnumber.KeyPress += new KeyPressEventHandler(tb_test_KeyPress);
+                ////
+                //tb_startnumber.GotFocus += new EventHandler(PickTargets);
+                ////
+                //tw.Control.Controls.Add(tb_startnumber);
+
+
+
+                //RadioButton radioButton_1 = new RadioButton
+                //{
+                //    Location = new Point(170, 110),
+                //    Name = "1",
+                //    Size = new Size(37, 34),
+                //    Text = "1",
+                //    Checked = false
+                //};
+                //tw.Control.Controls.Add(radioButton_1);
+
+                //RadioButton radioButton_10 = new RadioButton
+                //{
+                //    Location = new Point(215, 110),
+                //    Name = "10",
+                //    Size = new Size(37, 34),
+                //    Text = "10",
+                //    Checked = true
+                //};
+                //tw.Control.Controls.Add(radioButton_10);
+
+
+                //RadioButton radioButton_100 = new RadioButton();
+                //radioButton_100.Location = new Point(260, 110);
+                //radioButton_100.Name = "100";
+                //radioButton_100.Size = new Size(45, 34);
+                //radioButton_100.Text = "100";
+                //radioButton_100.CheckedChanged += new System.EventHandler(radioButton_100_CheckedChanged);
+                //tw.Control.Controls.Add(radioButton_100);
 
 
                 //ListView lb_points_list = new ListView
@@ -187,15 +222,15 @@ namespace Test_AutoMarkUp
                 //tw.Control.Controls.Add(lb_points_list);
 
 
-                listBoxPointsList = new ListBox
-                {
-                    Location = new Point(8, 152),
-                    Size = new Size(tw_width + 10, 100),
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                    Name = "Points List"
+                //listBoxPointsList = new ListBox
+                //{
+                //    Location = new Point(8, 152),
+                //    Size = new Size(tw_width + 10, 100),
+                //    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                //    Name = "Points List"
 
-                };
-                tw.Control.Controls.Add(listBoxPointsList);
+                //};
+                //tw.Control.Controls.Add(listBoxPointsList);
 
             }
 
@@ -354,21 +389,59 @@ namespace Test_AutoMarkUp
 
         public static void GetPos(Vector3 position)
         {
-            Logger.AddMessage(new LogMessage(position.ToString()));
+            //Logger.AddMessage(new LogMessage(position.ToString()));
             positionControlPos.SetFocus();
         }
 
         private static void AddPos(Vector3 position)
         {
+            CreateMarkUp(position);
             listBoxPointsList.SelectedIndices.Clear();
             listMarks.Add(position);
-            listBoxPointsList.Items.Add(position);
+            //listBoxPointsList.Items.Add(position);
+            listBoxPointsList.Items.Add("MarkUp " + listMarks.Count.ToString());
             listBoxPointsList.SelectedIndex = listBoxPointsList.Items.Count - 1;
             positionControlPos.Value = position;
             positionControlPos.SetFocus();
             Logger.AddMessage(new LogMessage("ListMarks " + listMarks.Count.ToString()));
-            
         }
+
+        private static int Increments()
+        {
+            int inc = 1;
+
+            if (radioButton_1.Checked)
+            {
+                inc = 1;
+            }
+            if (radioButton_10.Checked)
+            {
+                inc = 10;
+            }
+            if (radioButton_100.Checked)
+            {
+                inc = 100;
+            }
+
+            return inc;
+
+        }
+
+        public static void CreateMarkUp(Vector3 position)
+        {
+            Station station = Project.ActiveProject as Station;
+            Markup markupWText = new Markup();
+            markupWText.Transform.Translation = position;
+            markupWText.Text = GenerateMarkName.GenerateName();
+            station.Markups.Add(markupWText);
+            MarkNumber = MarkNumber+1 *Increments();
+
+            Logger.AddMessage(new LogMessage("MarkText : " + GenerateMarkName.GenerateName()));
+            Logger.AddMessage(new LogMessage("MarkNumber : " + MarkNumber));
+            Logger.AddMessage(new LogMessage("Increments : " + Increments()));
+        }
+
+
 
     }
 }
