@@ -19,28 +19,31 @@ namespace Test_AutoMarkUp
 
         private static ToolWindow tw;
 
-        public static PositionControl positionControlPos = new PositionControl();
+        public static PositionControl PositionControlPos = new PositionControl();
 
-        public static ListBox listBoxPointsList = new ListBox();
+        public static ListBox ListBoxPointsList = new ListBox();
 
-        public static TextBox tb_prefix = new TextBox();
+        public static TextBox TextBoxPrefix = new TextBox();
 
-        public static TextBox tb_suffix = new TextBox();
+        public static TextBox TextBoxSuffix = new TextBox();
 
-        public static TextBox tb_startnumber = new TextBox();
+        public static TextBox TextBoxStartnumber = new TextBox();
 
-        public static RadioButton radioButton_1 = new RadioButton();
+        public static RadioButton RadioButton_1 = new RadioButton();
 
-        public static RadioButton radioButton_10 = new RadioButton();
+        public static RadioButton RadioButton_10 = new RadioButton();
 
-        public static RadioButton radioButton_100 = new RadioButton();
+        public static RadioButton RadioButton_100 = new RadioButton();
 
-        public static ObjectSelectionControl IncrementSteps = new ObjectSelectionControl();
+        public static ObjectSelectionControl ObjectSelectionControlIncrementSteps = new ObjectSelectionControl();
 
-        public static NumericTextBox NumericTextBoxStartWith = new NumericTextBox();
+        public static ComboBox ComboboxIncrementSteps = new ComboBox();
+
+        public static NumericUpDown NumericUpDownStartWith = new NumericUpDown();
+
+        public static Label LabelResultname = new Label();
 
         public static int MarkNumber = 1;
-
 
         public static List<Vector3> listMarks = new List<Vector3>();
 
@@ -68,33 +71,34 @@ namespace Test_AutoMarkUp
                 tw.PreferredSize = new Size(tw_width, 330);
                 UIEnvironment.Windows.AddDocked(tw, System.Windows.Forms.DockStyle.Top, UIEnvironment.Windows["ObjectBrowser"] as ToolWindow);
 
-                //Form1 form = new Form1();
-                //form.Show();
+                //string start_num = "10";
 
-                string start_num = "10";
-
-                //PositionControl pos_control = new PositionControl();
-                positionControlPos.ErrorProviderControl = null;
-                positionControlPos.ExpressionErrorString = "Bad Expression";
-                positionControlPos.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
-                positionControlPos.LabelText = "Position";
-                positionControlPos.Location = new Point(8, 8);
-                positionControlPos.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                positionControlPos.MaxValueErrorString = "Value exceeds maximum";
-                positionControlPos.MinValueErrorString = "Value is below minimum";
-                positionControlPos.Name = "pos_control";
-                positionControlPos.NumTextBoxes = 3;
-                positionControlPos.ReadOnly = false;
-                positionControlPos.RefCoordSys = null;
-                positionControlPos.ShowLabel = true;
-                positionControlPos.Size = new Size(tw_width + 10, 34);
-                positionControlPos.TabIndex = 1;
-                positionControlPos.Text = "positionControl1";
-                positionControlPos.VerticalLayout = false;
-                //pos_control.GotFocus += new EventHandler(PickTargets);
-                //pos_control.MouseEnter += new EventHandler(PickTargets);
+                PositionControlPos.ErrorProviderControl = null;
+                PositionControlPos.ExpressionErrorString = "Bad Expression";
+                PositionControlPos.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
+                PositionControlPos.LabelText = "Position";
+                PositionControlPos.Location = new Point(8, 8);
+                PositionControlPos.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                PositionControlPos.MaxValueErrorString = "Value exceeds maximum";
+                PositionControlPos.MinValueErrorString = "Value is below minimum";
+                PositionControlPos.Name = "pos_control";
+                PositionControlPos.NumTextBoxes = 3;
+                PositionControlPos.ReadOnly = false;
+                PositionControlPos.RefCoordSys = null;
+                PositionControlPos.ShowLabel = true;
+                PositionControlPos.Size = new Size(tw_width + 10, 34);
+                PositionControlPos.TabIndex = 1;
+                PositionControlPos.Text = "positionControl1";
+                PositionControlPos.VerticalLayout = false;
+                //PositionControlPos.GotFocus += new EventHandler(PickTargets);
+                //PositionControlPos.Leave += new EventHandler(Release_PickTargets);
+                //PositionControlPos.Click += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
+                //PositionControlPos.Enter += new EventHandler(PickTargets);
+                PositionControlPos.Pick += new EventHandler(PickTargets2);
+                //PositionControlPos.Pick += new EventHandler(Release_PickTargets);
+                //PositionControlPos.MouseEnter += new EventHandler(PickTargets);
                 //pos_control.Click += new EventHandler(PickTargets);
-                tw.Control.Controls.Add(positionControlPos);
+                tw.Control.Controls.Add(PositionControlPos);
 
 
                 Label lbl_prefix = new Label
@@ -103,16 +107,15 @@ namespace Test_AutoMarkUp
                     Location = new Point(8, 50),
                     Size = new Size(200, 14)
                 };
-                //lbl_prefix.GotFocus += new EventHandler(PickTargets);
                 tw.Control.Controls.Add(lbl_prefix);
 
 
-                tb_prefix.Location = new Point(8, 65);
-                tb_prefix.Size = new Size(tw_width + 10, 34);
-                tb_prefix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                tb_prefix.Text = "p_";
-                tw.Control.Controls.Add(tb_prefix);
-
+                TextBoxPrefix.Location = new Point(8, 65);
+                TextBoxPrefix.Size = new Size(tw_width + 10, 34);
+                TextBoxPrefix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                TextBoxPrefix.Text = "p_";
+                TextBoxPrefix.TextChanged += new EventHandler(TextValueChanged);
+                tw.Control.Controls.Add(TextBoxPrefix);
 
 
                 Label lbl_suffix = new Label
@@ -123,11 +126,13 @@ namespace Test_AutoMarkUp
                 };
                 tw.Control.Controls.Add(lbl_suffix);
 
-                tb_suffix.Location = new Point(8, 110);
-                tb_suffix.Size = new Size(tw_width + 10, 34);
-                tb_suffix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                tb_suffix.GotFocus += new EventHandler(Release_PickTargets);
-                tw.Control.Controls.Add(tb_suffix);
+
+                TextBoxSuffix.Location = new Point(8, 110);
+                TextBoxSuffix.Size = new Size(tw_width + 10, 34);
+                TextBoxSuffix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                //tb_suffix.GotFocus += new EventHandler(Release_PickTargets);
+                TextBoxSuffix.TextChanged += new EventHandler(TextValueChanged);
+                tw.Control.Controls.Add(TextBoxSuffix);
 
 
                 Label labelNumIncrements = new Label
@@ -136,101 +141,53 @@ namespace Test_AutoMarkUp
                     Location = new Point(8, 140),
                     Size = new Size(80, 14)
                 };
-                //tw.Control.Controls.Add(labelNumIncrements);
+                tw.Control.Controls.Add(labelNumIncrements);
 
+                ComboboxIncrementSteps.Location = new Point(8, 155);
+                ComboboxIncrementSteps.Size = new Size(70, 45);
+                ComboboxIncrementSteps.DropDownWidth = 70;
+                ComboboxIncrementSteps.Items.AddRange(new object[] 
+                        {"1",
+                        "10",
+                        "100",
+                        "1000"});
+                ComboboxIncrementSteps.SelectedItem = "10";
+                ComboboxIncrementSteps.SelectedIndexChanged += ComboboxIncrementSteps_SelectedIndexChanged;
+                ComboboxIncrementSteps.SelectedIndexChanged += new EventHandler(TextValueChanged);
+                tw.Control.Controls.Add(ComboboxIncrementSteps);
 
-                IncrementSteps.Location = new Point(8, 140);
-                IncrementSteps.Size = new Size(70, 35);
-                IncrementSteps.AutoSelectNextControl = true;
-                IncrementSteps.LabelText = "Increment";
-                //IncrementSteps.
-                tw.Control.Controls.Add(IncrementSteps);
+                Label lbl_startnumber = new Label
+                {
+                    Text = "Start number",
+                    Location = new Point(100, 140),
+                    Size = new Size(80, 14)
+                };
+                tw.Control.Controls.Add(lbl_startnumber);
 
-                //Label lbl_startnumber = new Label
-                //{
-                //    Text = "Start with:",
-                //    Location = new Point(100, 140),
-                //    Size = new Size(80, 14)
-                //};
-                //tw.Control.Controls.Add(lbl_startnumber);
+                NumericUpDownStartWith.Location = new Point(100, 155);
+                NumericUpDownStartWith.Size = new Size(70, 55);
+                NumericUpDownStartWith.Minimum = 1;
+                NumericUpDownStartWith.Maximum = 1000;
+                NumericUpDownStartWith.Increment = 1;
+                NumericUpDownStartWith.DecimalPlaces = 0;
+                NumericUpDownStartWith.Value = 10;
+                NumericUpDownStartWith.DecimalPlaces = 0;
+                NumericUpDownStartWith.ValueChanged += new EventHandler(TextValueChanged);
+                tw.Control.Controls.Add(NumericUpDownStartWith);
 
-                NumericTextBoxStartWith.Location = new Point(100, 140);
-                NumericTextBoxStartWith.Size = new Size(70, 35);
-                NumericTextBoxStartWith.LabelText = "Start with:";
-                tw.Control.Controls.Add(NumericTextBoxStartWith);
+                Label lbl_firstlabelname = new Label
+                {
+                    Text = "First label name: ",
+                    Location = new Point(8, 200),
+                    Size = new Size(85, 14)
+                };
+                tw.Control.Controls.Add(lbl_firstlabelname);
 
-
-
-
-
-
-
-
-                ////TextBox tb_startnumber = new TextBox();
-                //tb_startnumber.Location = new Point(55, 210);
-                //tb_startnumber.Size = new Size(40, 34);
-                //tb_startnumber.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-                //tb_startnumber.TextAlign = HorizontalAlignment.Right;
-                //tb_startnumber.RightToLeft = RightToLeft.Yes;
-                //tb_startnumber.Text = start_num;
-                //tb_startnumber.KeyPress += new KeyPressEventHandler(tb_test_KeyPress);
-                ////
-                //tb_startnumber.GotFocus += new EventHandler(PickTargets);
-                ////
-                //tw.Control.Controls.Add(tb_startnumber);
-
-
-
-                //RadioButton radioButton_1 = new RadioButton
-                //{
-                //    Location = new Point(170, 110),
-                //    Name = "1",
-                //    Size = new Size(37, 34),
-                //    Text = "1",
-                //    Checked = false
-                //};
-                //tw.Control.Controls.Add(radioButton_1);
-
-                //RadioButton radioButton_10 = new RadioButton
-                //{
-                //    Location = new Point(215, 110),
-                //    Name = "10",
-                //    Size = new Size(37, 34),
-                //    Text = "10",
-                //    Checked = true
-                //};
-                //tw.Control.Controls.Add(radioButton_10);
-
-
-                //RadioButton radioButton_100 = new RadioButton();
-                //radioButton_100.Location = new Point(260, 110);
-                //radioButton_100.Name = "100";
-                //radioButton_100.Size = new Size(45, 34);
-                //radioButton_100.Text = "100";
-                //radioButton_100.CheckedChanged += new System.EventHandler(radioButton_100_CheckedChanged);
-                //tw.Control.Controls.Add(radioButton_100);
-
-
-                //ListView lb_points_list = new ListView
-                //{
-                //    Location = new Point(8, 152),
-                //    Size = new Size(tw_width + 10, 100),
-                //    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                //    Name = "Points List"
-
-                //};
-                //tw.Control.Controls.Add(lb_points_list);
-
-
-                //listBoxPointsList = new ListBox
-                //{
-                //    Location = new Point(8, 152),
-                //    Size = new Size(tw_width + 10, 100),
-                //    Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
-                //    Name = "Points List"
-
-                //};
-                //tw.Control.Controls.Add(listBoxPointsList);
+                tw.Control.Controls.Add(lbl_startnumber);
+                LabelResultname.Location = new Point(90, 200);
+                LabelResultname.Size = new Size(80, 14);
+                LabelResultname.Text = TextBoxPrefix.Text + NumericUpDownStartWith.Value + TextBoxSuffix.Text;
+                tw.Control.Controls.Add(LabelResultname);
 
             }
 
@@ -248,10 +205,10 @@ namespace Test_AutoMarkUp
         }
 
 
-        private static void tb_test_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
-        }
+        //private static void tb_test_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        //}
 
         //private void tb_test_TextChanged(object sender, KeyPressEventArgs e)
         // {
@@ -270,23 +227,6 @@ namespace Test_AutoMarkUp
         //    //}
         //}
 
-        public static void est()
-        {
-            string tmp1 = "tmp1";
-        }
-
-
-
-
-        private static void radioButton_100_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-        private static void pos_control_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-
         private static void PickTargets(object sender, EventArgs e)
         {
             //Begin UndoStep
@@ -294,8 +234,9 @@ namespace Test_AutoMarkUp
             try
             {
 
-                Logger.AddMessage(new LogMessage("Picked"));
+                Logger.AddMessage(new LogMessage("PickTargets"));
                 GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
+                PositionControlPos.SetFocus();
             }
             catch (Exception ex)
             {
@@ -309,6 +250,31 @@ namespace Test_AutoMarkUp
 
             }
         }
+
+        private static void PickTargets2(object sender, EventArgs e)
+        {
+            //Begin UndoStep
+            Project.UndoContext.BeginUndoStep("MultipleTarget");
+            try
+            {
+
+                Logger.AddMessage(new LogMessage("PickTargets"));
+                GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
+                PositionControlPos.SetFocus();
+            }
+            catch (Exception ex)
+            {
+                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+                Logger.AddMessage(new LogMessage(ex.Message.ToString()));
+            }
+            finally
+            {
+                //End UndoStep
+                Project.UndoContext.EndUndoStep();
+
+            }
+        }
+
 
         // Don't work
         private static void Release_PickTargets(object sender, EventArgs e)
@@ -337,6 +303,7 @@ namespace Test_AutoMarkUp
 
 
 
+
         private static void GraphicPicker_GraphicPick(object sender, GraphicPickEventArgs e)
         {
 
@@ -347,7 +314,9 @@ namespace Test_AutoMarkUp
             Project.UndoContext.BeginUndoStep("Pick Position");
             try
             {
-                GetPos(e.PickedPosition);
+                Logger.AddMessage(new LogMessage("GraphicPicker_GraphicPick"));
+
+                //GetPos(e.PickedPosition);
                 AddPos(e.PickedPosition);
             }
             catch (Exception exception)
@@ -362,47 +331,54 @@ namespace Test_AutoMarkUp
             }
         }
 
-        private static void Release_GraphicPick(object sender, GraphicPickEventArgs e)
+
+        private static void GraphicPick(object sender, EventArgs e)
         {
-
-            //Station station = Project.ActiveProject as Station;
-            //string stepName = station.ActiveTask.GetValidRapidName("Target", "_", 10);
-
-            //Begin UndoStep
-            Project.UndoContext.BeginUndoStep("Release Pick Position");
-            try
-            {
-                Logger.AddMessage(new LogMessage("Pick Released"));
-            }
-            catch (Exception exception)
-            {
-                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
-                Logger.AddMessage(new LogMessage(exception.Message.ToString()));
-            }
-            finally
-            {
-                //End UndoStep
-                Project.UndoContext.EndUndoStep();
-            }
+           
         }
 
 
-        public static void GetPos(Vector3 position)
-        {
-            //Logger.AddMessage(new LogMessage(position.ToString()));
-            positionControlPos.SetFocus();
-        }
+        //private static void Release_GraphicPick(object sender, GraphicPickEventArgs e)
+        //{
+
+        //    //Station station = Project.ActiveProject as Station;
+        //    //string stepName = station.ActiveTask.GetValidRapidName("Target", "_", 10);
+
+        //    //Begin UndoStep
+        //    Project.UndoContext.BeginUndoStep("Release Pick Position");
+        //    try
+        //    {
+        //        Logger.AddMessage(new LogMessage("Pick Released"));
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+        //        Logger.AddMessage(new LogMessage(exception.Message.ToString()));
+        //    }
+        //    finally
+        //    {
+        //        //End UndoStep
+        //        Project.UndoContext.EndUndoStep();
+        //    }
+        //}
+
+
+        //public static void GetPos(Vector3 position)
+        //{
+        //    Logger.AddMessage(new LogMessage(position.ToString()));
+        //    PositionControlPos.SetFocus();
+        //}
 
         private static void AddPos(Vector3 position)
         {
             CreateMarkUp(position);
-            listBoxPointsList.SelectedIndices.Clear();
+            ListBoxPointsList.SelectedIndices.Clear();
             listMarks.Add(position);
             //listBoxPointsList.Items.Add(position);
-            listBoxPointsList.Items.Add("MarkUp " + listMarks.Count.ToString());
-            listBoxPointsList.SelectedIndex = listBoxPointsList.Items.Count - 1;
-            positionControlPos.Value = position;
-            positionControlPos.SetFocus();
+            ListBoxPointsList.Items.Add("MarkUp " + listMarks.Count.ToString());
+            ListBoxPointsList.SelectedIndex = ListBoxPointsList.Items.Count - 1;
+            PositionControlPos.Value = position;
+            PositionControlPos.SetFocus();
             Logger.AddMessage(new LogMessage("ListMarks " + listMarks.Count.ToString()));
         }
 
@@ -410,21 +386,40 @@ namespace Test_AutoMarkUp
         {
             int inc = 1;
 
-            if (radioButton_1.Checked)
-            {
-                inc = 1;
-            }
-            if (radioButton_10.Checked)
-            {
-                inc = 10;
-            }
-            if (radioButton_100.Checked)
-            {
-                inc = 100;
-            }
+            //if (RadioButton_1.Checked)
+            //{
+            //    inc = 1;
+            //}
+            //if (RadioButton_10.Checked)
+            //{
+            //    inc = 10;
+            //}
+            //if (RadioButton_100.Checked)
+            //{
+            //    inc = 100;
+            //}
+
+            inc = Int16.Parse(ComboboxIncrementSteps.SelectedItem.ToString());
 
             return inc;
 
+        }
+
+        private static void ComboboxIncrementSteps_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ComboboxIncrementSteps.SelectedIndex == -1)
+            {
+                NumericUpDownStartWith.Value = decimal.Zero;
+            }
+            else
+            {
+                NumericUpDownStartWith.Value = Convert.ToDecimal(ComboboxIncrementSteps.SelectedItem.ToString());
+            }
+        }
+
+        private static void TextValueChanged(object sender, EventArgs e)
+        {
+            LabelResultname.Text = TextBoxPrefix.Text + NumericUpDownStartWith.Value + TextBoxSuffix.Text;
         }
 
         public static void CreateMarkUp(Vector3 position)

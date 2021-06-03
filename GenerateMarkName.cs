@@ -10,9 +10,9 @@ namespace Test_AutoMarkUp
     {
         public static string GenerateName()
         {
-            string pref = main.tb_prefix.Text;
-            string name = main.tb_startnumber.Text;
-            string suff = main.tb_suffix.Text;
+            string pref = main.TextBoxPrefix.Text;
+            string name = main.NumericUpDownStartWith.Text;
+            string suff = main.TextBoxSuffix.Text;
             int MarkNumber = main.MarkNumber;
 
             string generatedName = pref + (name+MarkNumber) + suff;
