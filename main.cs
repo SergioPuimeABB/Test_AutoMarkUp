@@ -43,7 +43,9 @@ namespace Test_AutoMarkUp
 
         public static Label LabelResultname = new Label();
 
-        public static int MarkNumber = 1;
+        public static int MarkNumber = 0;
+
+        public static bool FirstClick = true;
 
         public static List<Vector3> listMarks = new List<Vector3>();
 
@@ -69,6 +71,7 @@ namespace Test_AutoMarkUp
                 tw = new ToolWindow("MyToolWindow_4");
                 tw.Caption = "Reference ToolWindow.";
                 tw.PreferredSize = new Size(tw_width, 330);
+                tw.Closed += new EventHandler(CloseTW); // ?????????????????????
                 UIEnvironment.Windows.AddDocked(tw, System.Windows.Forms.DockStyle.Top, UIEnvironment.Windows["ObjectBrowser"] as ToolWindow);
 
                 //string start_num = "10";
@@ -94,7 +97,7 @@ namespace Test_AutoMarkUp
                 //PositionControlPos.Leave += new EventHandler(Release_PickTargets);
                 //PositionControlPos.Click += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
                 //PositionControlPos.Enter += new EventHandler(PickTargets);
-                PositionControlPos.Pick += new EventHandler(PickTargets2);
+                PositionControlPos.Pick += new EventHandler(PickTargets);
                 //PositionControlPos.Pick += new EventHandler(Release_PickTargets);
                 //PositionControlPos.MouseEnter += new EventHandler(PickTargets);
                 //pos_control.Click += new EventHandler(PickTargets);
@@ -229,113 +232,104 @@ namespace Test_AutoMarkUp
 
         private static void PickTargets(object sender, EventArgs e)
         {
-            //Begin UndoStep
-            Project.UndoContext.BeginUndoStep("MultipleTarget");
-            try
-            {
 
-                Logger.AddMessage(new LogMessage("PickTargets"));
+            Logger.AddMessage(new LogMessage("PickTargets"));
+            if (FirstClick)
+            {
                 GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
-                PositionControlPos.SetFocus();
             }
-            catch (Exception ex)
-            {
-                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
-                Logger.AddMessage(new LogMessage(ex.Message.ToString()));
-            }
-            finally
-            {
-                //End UndoStep
-                Project.UndoContext.EndUndoStep();
+            PositionControlPos.SetFocus();
 
-            }
+            ////Begin UndoStep
+            //Project.UndoContext.BeginUndoStep("MultipleTarget");
+            //try
+            //{
+
+            //    Logger.AddMessage(new LogMessage("PickTargets"));
+            //    if (FirstClick)
+            //    {
+            //        GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
+            //    }
+            //    PositionControlPos.SetFocus();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+            //    Logger.AddMessage(new LogMessage(ex.Message.ToString()));
+            //}
+            //finally
+            //{
+            //    //End UndoStep
+            //    Project.UndoContext.EndUndoStep();
+
+            //}
         }
 
-        private static void PickTargets2(object sender, EventArgs e)
+        private static void CloseTW(object sender, EventArgs e)
         {
-            //Begin UndoStep
-            Project.UndoContext.BeginUndoStep("MultipleTarget");
-            try
-            {
-
-                Logger.AddMessage(new LogMessage("PickTargets"));
-                GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
-                PositionControlPos.SetFocus();
-            }
-            catch (Exception ex)
-            {
-                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
-                Logger.AddMessage(new LogMessage(ex.Message.ToString()));
-            }
-            finally
-            {
-                //End UndoStep
-                Project.UndoContext.EndUndoStep();
-
-            }
-        }
-
-
-        // Don't work
-        private static void Release_PickTargets(object sender, EventArgs e)
-        {
-            //Begin UndoStep
-            Project.UndoContext.BeginUndoStep("MultipleTarget");
-            try
-            {
-                Logger.AddMessage(new LogMessage("Released Picked"));
+                Logger.AddMessage(new LogMessage("Closed Window"));
                 GraphicPicker.GraphicPick -= new GraphicPickEventHandler(GraphicPicker_GraphicPick);
-
-            }
-            catch (Exception ex)
-            {
-                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
-                Logger.AddMessage(new LogMessage(ex.Message.ToString()));
-            }
-            finally
-            {
-                //End UndoStep
-                Project.UndoContext.EndUndoStep();
-
-            }
         }
 
 
+        //private static void Release_PickTargets(object sender, EventArgs e)
+        //{
+        //    //Begin UndoStep
+        //    Project.UndoContext.BeginUndoStep("MultipleTarget");
+        //    try
+        //    {
+        //        Logger.AddMessage(new LogMessage("Released Picked"));
+        //        GraphicPicker.GraphicPick -= new GraphicPickEventHandler(GraphicPicker_GraphicPick);
 
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+        //        Logger.AddMessage(new LogMessage(ex.Message.ToString()));
+        //    }
+        //    finally
+        //    {
+        //        //End UndoStep
+        //        Project.UndoContext.EndUndoStep();
+
+        //    }
+        //}
 
 
         private static void GraphicPicker_GraphicPick(object sender, GraphicPickEventArgs e)
         {
 
+            Logger.AddMessage(new LogMessage("GraphicPicker_GraphicPick"));
+
+            CreateMarkUp(e.PickedPosition);
+            FirstClick = false;
+
+            return;
+
             //Station station = Project.ActiveProject as Station;
             //string stepName = station.ActiveTask.GetValidRapidName("Target", "_", 10);
 
-            //Begin UndoStep
-            Project.UndoContext.BeginUndoStep("Pick Position");
-            try
-            {
-                Logger.AddMessage(new LogMessage("GraphicPicker_GraphicPick"));
+            ////Begin UndoStep
+            //Project.UndoContext.BeginUndoStep("Pick Position");
+            //try
+            //{
+            //    Logger.AddMessage(new LogMessage("GraphicPicker_GraphicPick"));
 
-                //GetPos(e.PickedPosition);
-                AddPos(e.PickedPosition);
-            }
-            catch (Exception exception)
-            {
-                Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
-                Logger.AddMessage(new LogMessage(exception.Message.ToString()));
-            }
-            finally
-            {
-                //End UndoStep
-                Project.UndoContext.EndUndoStep();
-            }
+            //    CreateMarkUp(e.PickedPosition);
+            //    FirstClick = false;
+            //}
+            //catch (Exception exception)
+            //{
+            //    Project.UndoContext.CancelUndoStep(CancelUndoStepType.Rollback);
+            //    Logger.AddMessage(new LogMessage(exception.Message.ToString()));
+            //}
+            //finally
+            //{
+            //    //End UndoStep
+            //    Project.UndoContext.EndUndoStep();
+            //}
         }
 
-
-        private static void GraphicPick(object sender, EventArgs e)
-        {
-           
-        }
 
 
         //private static void Release_GraphicPick(object sender, GraphicPickEventArgs e)
@@ -369,40 +363,25 @@ namespace Test_AutoMarkUp
         //    PositionControlPos.SetFocus();
         //}
 
-        private static void AddPos(Vector3 position)
-        {
-            CreateMarkUp(position);
-            ListBoxPointsList.SelectedIndices.Clear();
-            listMarks.Add(position);
-            //listBoxPointsList.Items.Add(position);
-            ListBoxPointsList.Items.Add("MarkUp " + listMarks.Count.ToString());
-            ListBoxPointsList.SelectedIndex = ListBoxPointsList.Items.Count - 1;
-            PositionControlPos.Value = position;
-            PositionControlPos.SetFocus();
-            Logger.AddMessage(new LogMessage("ListMarks " + listMarks.Count.ToString()));
-        }
+        //private static void AddPos(Vector3 position)
+        //{
+        //    CreateMarkUp(position);
+        //    //ListBoxPointsList.SelectedIndices.Clear();
+        //    //listMarks.Add(position);
+        //    //listBoxPointsList.Items.Add(position);
+        //    //ListBoxPointsList.Items.Add("MarkUp " + listMarks.Count.ToString());
+        //    //ListBoxPointsList.SelectedIndex = ListBoxPointsList.Items.Count - 1;
+            
+        //    //PositionControlPos.Value = position;
+        //    //PositionControlPos.SetFocus();
+        //    Logger.AddMessage(new LogMessage("MarkNumber " + MarkNumber));
+        //}
 
         private static int Increments()
         {
-            int inc = 1;
-
-            //if (RadioButton_1.Checked)
-            //{
-            //    inc = 1;
-            //}
-            //if (RadioButton_10.Checked)
-            //{
-            //    inc = 10;
-            //}
-            //if (RadioButton_100.Checked)
-            //{
-            //    inc = 100;
-            //}
-
-            inc = Int16.Parse(ComboboxIncrementSteps.SelectedItem.ToString());
+            int inc = Int16.Parse(ComboboxIncrementSteps.SelectedItem.ToString());
 
             return inc;
-
         }
 
         private static void ComboboxIncrementSteps_SelectedIndexChanged(object sender, EventArgs e)
@@ -427,15 +406,28 @@ namespace Test_AutoMarkUp
             Station station = Project.ActiveProject as Station;
             Markup markupWText = new Markup();
             markupWText.Transform.Translation = position;
-            markupWText.Text = GenerateMarkName.GenerateName();
+            markupWText.Text = GenerateName();
+            markupWText.Name = markupWText.Text;
             station.Markups.Add(markupWText);
-            MarkNumber = MarkNumber+1 *Increments();
-
-            Logger.AddMessage(new LogMessage("MarkText : " + GenerateMarkName.GenerateName()));
-            Logger.AddMessage(new LogMessage("MarkNumber : " + MarkNumber));
-            Logger.AddMessage(new LogMessage("Increments : " + Increments()));
+            MarkNumber += 1 *Increments();
+            return;
+            //Logger.AddMessage(new LogMessage("MarkNumber : " + MarkNumber));
+            //Logger.AddMessage(new LogMessage("Increments : " + Increments()));
         }
 
+        public static string GenerateName()
+        {
+            string pref = TextBoxPrefix.Text;
+            int name = Int16.Parse(NumericUpDownStartWith.Text);
+            string suff = TextBoxSuffix.Text;
+
+            int resultname = name + MarkNumber;
+
+            string generatedName = pref + resultname + suff;
+
+
+            return generatedName;
+        }
 
 
     }
