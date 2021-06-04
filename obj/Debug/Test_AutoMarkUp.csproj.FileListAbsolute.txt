@@ -5,6 +5,3 @@ E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.csprojAs
 E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.csproj.CoreCompileInputs.cache
 E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.dll
 E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.pdb
-E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.Form1.resources
-E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.csproj.GenerateResource.cache
-E:\_RobotStudio\SDK\Practicas\Test_AutoMarkUp\obj\Debug\Test_AutoMarkUp.UserControl1.resources
