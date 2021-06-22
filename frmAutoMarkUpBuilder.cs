@@ -19,23 +19,35 @@ namespace Test_AutoMarkUp
         
         public int _markNumber = 0;
 
-        private PositionControl PositionControlPos;
+        private PositionControl positionControlPos;
 
-        private ListBox ListBoxPointsList;
+        //private ListBox listBoxPointsList;
 
-        private TextBox TextBoxPrefix;
+        private ComboBox comboBoxPrefix;
 
-        private TextBox TextBoxSuffix;
+        private TextBox textBoxSuffix;
 
-        private TextBox TextBoxStartnumber;
+        private TextBox textBoxStartnumber;
 
-        private ObjectSelectionControl ObjectSelectionControlIncrementSteps;
+        //private ObjectSelectionControl tbjectSelectionControlIncrementSteps;
 
-        private ComboBox ComboboxIncrementSteps;
+        private ComboBox comboBoxIncrementSteps;
 
-        private NumericUpDown NumericUpDownStartWith;
+        private NumericUpDown numericUpDownStartWith;
 
-        private Label LabelResultname;
+        private Label labelResultname;
+        private Label labelPrefix;
+        private Label labelSuffix;
+        private Label labelNumIncrements;
+        private Label labelStartnumber;
+        private Label labelFirstlabelname;
+
+        private Button buttonClose;
+        private Button buttonCreate;
+
+        private GroupBox groupBox;
+
+        private IContainer components;
 
         public frmAutoMarkUpBuilder()
         {
@@ -45,7 +57,7 @@ namespace Test_AutoMarkUp
         }
         private void frmAutoMarkUp_Activate(object sender, EventArgs e)
         {
-            if (_firstClick | PositionControlPos.Focused)
+            if (_firstClick | positionControlPos.Focused)
             {
                 Logger.AddMessage(new LogMessage("PickTargets"));
                 GraphicPicker.GraphicPick += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
@@ -64,7 +76,7 @@ namespace Test_AutoMarkUp
             //e.Cursor = 
             CreateMarkUp(e.PickedPosition);
             _firstClick = false;
-            PositionControlPos.SetFocus();
+            positionControlPos.SetFocus();
         }
 
         private void CreateMarkUp(Vector3 position)
@@ -80,9 +92,9 @@ namespace Test_AutoMarkUp
 
         private string GenerateName()
         {
-            string pref = TextBoxPrefix.Text;
-            int name = Int16.Parse(NumericUpDownStartWith.Text);
-            string suff = TextBoxSuffix.Text;
+            string pref = comboBoxPrefix.Text;
+            int name = Int16.Parse(numericUpDownStartWith.Text);
+            string suff = textBoxSuffix.Text;
             int resultname = name + _markNumber;
 
             string generatedName = pref + resultname + suff;
@@ -91,40 +103,75 @@ namespace Test_AutoMarkUp
 
         private int Increments()
         {
-            int inc = Int16.Parse(ComboboxIncrementSteps.SelectedItem.ToString());
+            int inc = Int16.Parse(comboBoxIncrementSteps.SelectedItem.ToString());
             return inc;
         }
 
 
         private void InitializeComponent()
         {
-            //int tw_width = UIEnvironment.Windows["ObjectBrowser"].Control.Size.Width - 30;
+            int tw_width = UIEnvironment.Windows["ObjectBrowser"].Control.Size.Width - 15;
 
-            //tw = new ToolWindow("MyToolWindow_4");
-            //tw.Caption = "Reference ToolWindow.";
-            //tw.PreferredSize = new Size(tw_width, 330);
-            //tw.Closed += new EventHandler(CloseTW); // ?????????????????????
-            //UIEnvironment.Windows.AddDocked(tw, System.Windows.Forms.DockStyle.Top, UIEnvironment.Windows["ObjectBrowser"] as ToolWindow);
+            components = new System.ComponentModel.Container();
+            positionControlPos = new PositionControl();
+            comboBoxPrefix = new ComboBox();
+            textBoxSuffix = new TextBox();
+            labelPrefix = new Label();
+            labelSuffix = new Label();
+            labelNumIncrements = new Label();
+            labelStartnumber = new Label();
+            labelStartnumber = new Label();
+            labelFirstlabelname = new Label();
+            labelResultname = new Label();
+            comboBoxIncrementSteps = new ComboBox();
+            numericUpDownStartWith = new NumericUpDown();
+            groupBox = new GroupBox();
+            buttonClose = new Button();
+            buttonCreate = new Button();
 
-            //string start_num = "10";
 
-            PositionControlPos.ErrorProviderControl = null;
-            PositionControlPos.ExpressionErrorString = "Bad Expression";
-            PositionControlPos.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
-            PositionControlPos.LabelText = "Position";
-            PositionControlPos.Location = new Point(8, 8);
-            PositionControlPos.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            PositionControlPos.MaxValueErrorString = "Value exceeds maximum";
-            PositionControlPos.MinValueErrorString = "Value is below minimum";
-            PositionControlPos.Name = "pos_control";
-            PositionControlPos.NumTextBoxes = 3;
-            PositionControlPos.ReadOnly = false;
-            PositionControlPos.RefCoordSys = null;
-            PositionControlPos.ShowLabel = true;
-            PositionControlPos.Size = new Size(tw_width + 10, 34);
-            PositionControlPos.TabIndex = 1;
-            PositionControlPos.Text = "positionControl1";
-            PositionControlPos.VerticalLayout = false;
+            positionControlPos.SuspendLayout();
+            groupBox.SuspendLayout();
+            SuspendLayout();
+
+
+
+            //pos_control.ErrorProviderControl = null;
+            //pos_control.ExpressionErrorString = "Bad Expression";
+            //pos_control.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
+            //pos_control.LabelText = "Corner Point";
+            //pos_control.Location = new Point(8, 85);
+            //pos_control.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            //pos_control.MaxValueErrorString = "Value exceeds maximum";
+            //pos_control.MinValueErrorString = "Value is below minimum";
+            //pos_control.Name = "pos_control";
+            //pos_control.NumTextBoxes = 3;
+            //pos_control.ReadOnly = false;
+            //pos_control.RefCoordSys = null;
+            //pos_control.ShowLabel = true;
+            //pos_control.Size = new Size(tw_width + 7, 34);
+            //pos_control.TabIndex = 1;
+            //pos_control.Text = "positionControl1";
+            //pos_control.VerticalLayout = false;
+
+
+            positionControlPos.ErrorProviderControl = null;
+            positionControlPos.ExpressionErrorString = "Bad Expression";
+            positionControlPos.LabelQuantity = ABB.Robotics.RobotStudio.BuiltinQuantity.Length;
+            positionControlPos.LabelText = "Position";
+            positionControlPos.Location = new Point(8, 18);
+            //(positionControlPos.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            positionControlPos.MaxValueErrorString = "Value exceeds maximum";
+            positionControlPos.MinValueErrorString = "Value is below minimum";
+            positionControlPos.Name = "pos_control";
+            positionControlPos.NumTextBoxes = 3;
+            positionControlPos.ReadOnly = false;
+            positionControlPos.RefCoordSys = null;
+            positionControlPos.ShowLabel = true;
+            positionControlPos.Size = new Size(tw_width , 34);
+            positionControlPos.TabIndex = 1;
+            positionControlPos.Text = "positionControl1";
+            positionControlPos.VerticalLayout = false;
             //PositionControlPos.GotFocus += new EventHandler(PickTargets);
             //PositionControlPos.Leave += new EventHandler(ReleasePickTargets);
             //PositionControlPos.Click += new GraphicPickEventHandler(GraphicPicker_GraphicPick);
@@ -132,113 +179,130 @@ namespace Test_AutoMarkUp
             //PositionControlPos.Pick += new EventHandler(PositionControlPosFocus);
             //PositionControlPos.Pick += new EventHandler(Release_PickTargets);
             //PositionControlPos.MouseEnter += new EventHandler(PickTargets);
-            tw.Control.Controls.Add(PositionControlPos);
 
+            labelPrefix.Text = "Name Prefix";
+            labelPrefix.Location = new Point(8, 60);
+            labelPrefix.Size = new Size(100, 14);
 
-            Label lbl_prefix = new Label
-            {
-                Text = "Name Prefix",
-                Location = new Point(8, 50),
-                Size = new Size(200, 14)
-            };
-            tw.Control.Controls.Add(lbl_prefix);
+            comboBoxPrefix.Location = new Point(8, 75);
+            comboBoxPrefix.Size = new Size((positionControlPos.Width / 2) -15, 34);
+            //textBoxPrefix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            //comboBoxPrefix.Text = "p_";
+            comboBoxPrefix.TabIndex = 2;
+            comboBoxPrefix.DropDownWidth = 70;
+            comboBoxPrefix.Items.AddRange(new object[]
+                    {"p_",
+                     "pname2_",
+                     "pname3_",
+                     "pname4_"});
+            comboBoxPrefix.SelectedItem = "p_";
+            //comboBoxPrefix.SelectedIndexChanged += ComboboxIncrementSteps_SelectedIndexChanged;
+            //comboBoxPrefix.SelectedIndexChanged += new EventHandler(TextValueChanged);
+            comboBoxPrefix.TextChanged += new EventHandler(TextValueChanged);
 
-
-            TextBoxPrefix.Location = new Point(8, 65);
-            TextBoxPrefix.Size = new Size(tw_width + 10, 34);
-            TextBoxPrefix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            TextBoxPrefix.Text = "p_";
-            TextBoxPrefix.TextChanged += new EventHandler(TextValueChanged);
-            tw.Control.Controls.Add(TextBoxPrefix);
-
-
-            Label lbl_suffix = new Label
-            {
-                Text = "Name Suffix",
-                Location = new Point(8, 95),
-                Size = new Size(200, 14)
-            };
-            tw.Control.Controls.Add(lbl_suffix);
-
-
-            TextBoxSuffix.Location = new Point(8, 110);
-            TextBoxSuffix.Size = new Size(tw_width + 10, 34);
-            TextBoxSuffix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            labelSuffix.Text = "Name Suffix";
+            labelSuffix.Location = new Point((positionControlPos.Width / 2) + 23, 60);
+            labelSuffix.Size = new Size(100, 14);
+            
+            textBoxSuffix.Location = new Point((positionControlPos.Width / 2) + 23, 75);
+            textBoxSuffix.Size = comboBoxPrefix.Size;
+            //textBoxSuffix.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            textBoxSuffix.TabIndex = 3;
             //tb_suffix.GotFocus += new EventHandler(Release_PickTargets);
-            TextBoxSuffix.TextChanged += new EventHandler(TextValueChanged);
-            tw.Control.Controls.Add(TextBoxSuffix);
+            textBoxSuffix.TextChanged += new EventHandler(TextValueChanged);
 
+            labelNumIncrements.Text = "Increment";
+            labelNumIncrements.Location = new Point(8, 105);
+            labelNumIncrements.Size = new Size(80, 14);
 
-            Label labelNumIncrements = new Label
-            {
-                Text = "Increment",
-                Location = new Point(8, 140),
-                Size = new Size(80, 14)
-            };
-            tw.Control.Controls.Add(labelNumIncrements);
-
-            ComboboxIncrementSteps.Location = new Point(8, 155);
-            ComboboxIncrementSteps.Size = new Size(70, 45);
-            ComboboxIncrementSteps.DropDownWidth = 70;
-            ComboboxIncrementSteps.Items.AddRange(new object[]
+            comboBoxIncrementSteps.Location = new Point(8, 120);
+            comboBoxIncrementSteps.Size = new Size(70, 45);
+            comboBoxIncrementSteps.DropDownWidth = 70;
+            comboBoxIncrementSteps.Items.AddRange(new object[]
                     {"1",
-                        "10",
-                        "100",
-                        "1000"});
-            ComboboxIncrementSteps.SelectedItem = "10";
-            ComboboxIncrementSteps.SelectedIndexChanged += ComboboxIncrementSteps_SelectedIndexChanged;
-            ComboboxIncrementSteps.SelectedIndexChanged += new EventHandler(TextValueChanged);
-            tw.Control.Controls.Add(ComboboxIncrementSteps);
+                     "10",
+                     "100",
+                     "1000"});
+            comboBoxIncrementSteps.SelectedItem = "10";
+            comboBoxIncrementSteps.TabIndex = 4;
+            comboBoxIncrementSteps.SelectedIndexChanged += ComboboxIncrementSteps_SelectedIndexChanged;
+            comboBoxIncrementSteps.SelectedIndexChanged += new EventHandler(TextValueChanged);
+            
+            labelStartnumber.Text = "Start number";
+            labelStartnumber.Location = new Point(100, 105);
+            labelStartnumber.Size = new Size(80, 14);
 
-            Label lbl_startnumber = new Label
-            {
-                Text = "Start number",
-                Location = new Point(100, 140),
-                Size = new Size(80, 14)
-            };
-            tw.Control.Controls.Add(lbl_startnumber);
+            numericUpDownStartWith.Location = new Point(100, 120);
+            numericUpDownStartWith.Size = new Size(70, 45);
+            numericUpDownStartWith.Minimum = 1;
+            numericUpDownStartWith.Maximum = 1000;
+            numericUpDownStartWith.Increment = 1;
+            numericUpDownStartWith.DecimalPlaces = 0;
+            numericUpDownStartWith.Value = 10;
+            numericUpDownStartWith.DecimalPlaces = 0;
+            numericUpDownStartWith.TabIndex = 5;
+            numericUpDownStartWith.ValueChanged += new EventHandler(TextValueChanged);
 
-            NumericUpDownStartWith.Location = new Point(100, 155);
-            NumericUpDownStartWith.Size = new Size(70, 55);
-            NumericUpDownStartWith.Minimum = 1;
-            NumericUpDownStartWith.Maximum = 1000;
-            NumericUpDownStartWith.Increment = 1;
-            NumericUpDownStartWith.DecimalPlaces = 0;
-            NumericUpDownStartWith.Value = 10;
-            NumericUpDownStartWith.DecimalPlaces = 0;
-            NumericUpDownStartWith.ValueChanged += new EventHandler(TextValueChanged);
-            tw.Control.Controls.Add(NumericUpDownStartWith);
+            labelFirstlabelname.Text = "First label name: ";
+            labelFirstlabelname.Location = new Point(8, 155);
+            labelFirstlabelname.Size = new Size(90, 14);
 
-            Label lbl_firstlabelname = new Label
-            {
-                Text = "First label name: ",
-                Location = new Point(8, 200),
-                Size = new Size(85, 14)
-            };
-            tw.Control.Controls.Add(lbl_firstlabelname);
+            labelResultname.Location = new Point(95, 155);
+            labelResultname.Size = new Size(80, 14);
+            labelResultname.Text = comboBoxPrefix.Text + numericUpDownStartWith.Value + textBoxSuffix.Text;
 
-            tw.Control.Controls.Add(lbl_startnumber);
-            LabelResultname.Location = new Point(90, 200);
-            LabelResultname.Size = new Size(80, 14);
-            LabelResultname.Text = TextBoxPrefix.Text + NumericUpDownStartWith.Value + TextBoxSuffix.Text;
-            tw.Control.Controls.Add(LabelResultname);
+            buttonClose.Location = new Point(175, 175);
+            buttonClose.Size = new Size(70, 20);
+            buttonClose.Text = "Close";
+
+            buttonCreate.Location = new Point(85, 175);
+            buttonCreate.Size = new Size(70, 20);
+            buttonCreate.Text = "Create";
+
+
+            base.AdjustableHeight = true;
+            base.AutoScaleDimensions = new System.Drawing.SizeF(6f, 13f);
+            base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScroll = true;
+            base.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            base.Caption = "Auto MarkUp Tool";
+            base.Controls.Add(positionControlPos);
+            base.Controls.Add(labelPrefix);
+            base.Controls.Add(comboBoxPrefix);
+            base.Controls.Add(labelSuffix);
+            base.Controls.Add(textBoxSuffix);
+            base.Controls.Add(labelNumIncrements);
+            base.Controls.Add(comboBoxIncrementSteps);
+            base.Controls.Add(labelStartnumber);
+            base.Controls.Add(numericUpDownStartWith);
+            base.Controls.Add(labelFirstlabelname); 
+            base.Controls.Add(labelResultname);
+            base.Controls.Add(buttonClose);
+            base.Controls.Add(buttonCreate);
+            base.Name = "frmAutoMarkUpBuilder";
+            base.Size = new System.Drawing.Size(242, 240);
+            positionControlPos.ResumeLayout(false);
+            groupBox.ResumeLayout(false);
+            groupBox.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         private void ComboboxIncrementSteps_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ComboboxIncrementSteps.SelectedIndex == -1)
+            if (comboBoxIncrementSteps.SelectedIndex == -1)
             {
-                NumericUpDownStartWith.Value = decimal.Zero;
+                numericUpDownStartWith.Value = decimal.Zero;
             }
             else
             {
-                NumericUpDownStartWith.Value = Convert.ToDecimal(ComboboxIncrementSteps.SelectedItem.ToString());
+                numericUpDownStartWith.Value = Convert.ToDecimal(comboBoxIncrementSteps.SelectedItem.ToString());
             }
         }
 
         private void TextValueChanged(object sender, EventArgs e)
         {
-            LabelResultname.Text = TextBoxPrefix.Text + NumericUpDownStartWith.Value + TextBoxSuffix.Text;
+            labelResultname.Text = comboBoxPrefix.Text + numericUpDownStartWith.Value + textBoxSuffix.Text;
         }
 
 
