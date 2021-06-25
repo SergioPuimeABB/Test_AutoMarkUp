@@ -22,10 +22,11 @@ namespace Test_AutoMarkUp
 
         private PositionControl positionControlPos;
 
-        private ComboBox comboBoxPrefix;
+        //private ComboBox comboBoxPrefix;
 
+        private TextBox textBoxPrefix;
         private TextBox textBoxSuffix;
-
+        
         private ComboBox comboBoxIncrementSteps;
 
         private NumericUpDown numericUpDownStartWith;
@@ -35,13 +36,18 @@ namespace Test_AutoMarkUp
         private Label labelSuffix;
         private Label labelNumIncrements;
         private Label labelStartnumber;
+        private Label labelColor;
+        private Label labelClipStandard;
         private Label labelFirstlabelname;
 
         private Button buttonClear;
         private Button buttonCreate;
         private Button buttonClose;
 
-        private GroupBox groupBox;
+        private Button buttonColor;
+        private ColorDialog colorDialogColor;
+                
+        //private GroupBox groupBox;
 
         public frmAutoMarkUpBuilder()
         {
@@ -85,7 +91,7 @@ namespace Test_AutoMarkUp
 
         private string GenerateName()
         {
-            string pref = comboBoxPrefix.Text;
+            string pref = textBoxPrefix.Text;
             int name = Int16.Parse(numericUpDownStartWith.Text);
             string suff = textBoxSuffix.Text;
             int resultname = name + _markNumber;
@@ -105,7 +111,7 @@ namespace Test_AutoMarkUp
             int tw_width = UIEnvironment.Windows["ObjectBrowser"].Control.Size.Width - 15;
 
             positionControlPos = new PositionControl();
-            comboBoxPrefix = new ComboBox();
+            textBoxPrefix = new TextBox();
             textBoxSuffix = new TextBox();
             labelPrefix = new Label();
             labelSuffix = new Label();
@@ -113,17 +119,21 @@ namespace Test_AutoMarkUp
             labelStartnumber = new Label();
             labelStartnumber = new Label();
             labelFirstlabelname = new Label();
+            labelColor = new Label();
+            buttonColor = new Button();
+            colorDialogColor = new ColorDialog();
+            labelClipStandard = new Label();
             labelResultname = new Label();
             comboBoxIncrementSteps = new ComboBox();
             numericUpDownStartWith = new NumericUpDown();
-            groupBox = new GroupBox();
+            //groupBox = new GroupBox();
             buttonClear = new Button();
             buttonCreate = new Button();
             buttonClose = new Button();
 
 
             positionControlPos.SuspendLayout();
-            groupBox.SuspendLayout();
+            //groupBox.SuspendLayout();
             SuspendLayout();
 
 
@@ -148,82 +158,92 @@ namespace Test_AutoMarkUp
             labelPrefix.Location = new Point(8, 60);
             labelPrefix.Size = new Size(100, 14);
 
-            comboBoxPrefix.Location = new Point(8, 75);
-            comboBoxPrefix.Size = new Size((positionControlPos.Width / 2) - 15, 34);
-            comboBoxPrefix.TabIndex = 2;
-            comboBoxPrefix.DropDownWidth = 70;
-            comboBoxPrefix.Items.AddRange(new object[]
-                    {"p_",
-                     "pname2_",
-                     "pname3_",
-                     "pname4_"});
-            comboBoxPrefix.SelectedItem = "p_";
-            comboBoxPrefix.TextChanged += new EventHandler(TextValueChanged);
+            textBoxPrefix.Location = new Point(8, 75);
+            textBoxPrefix.Size = new Size((positionControlPos.Width / 2) - 15, 34);
+            textBoxPrefix.TabIndex = 2;
+            textBoxPrefix.TextChanged += new EventHandler(TextValueChanged);
 
             labelSuffix.Text = "Name Suffix";
             labelSuffix.Location = new Point((positionControlPos.Width / 2) + 23, 60);
             labelSuffix.Size = new Size(100, 14);
 
             textBoxSuffix.Location = new Point((positionControlPos.Width / 2) + 23, 75);
-            textBoxSuffix.Size = comboBoxPrefix.Size;
+            textBoxSuffix.Size = textBoxPrefix.Size;
             textBoxSuffix.TabIndex = 3;
             textBoxSuffix.TextChanged += new EventHandler(TextValueChanged);
 
             labelNumIncrements.Text = "Increment";
             labelNumIncrements.Location = new Point(8, 105);
-            labelNumIncrements.Size = new Size(80, 14);
+            labelNumIncrements.Size = new Size(60, 14);
 
             comboBoxIncrementSteps.Location = new Point(8, 120);
-            comboBoxIncrementSteps.Size = new Size(70, 45);
+            comboBoxIncrementSteps.Size = new Size(70, 44);
             comboBoxIncrementSteps.DropDownWidth = 70;
             comboBoxIncrementSteps.Items.AddRange(new object[]
                     {"1",
                      "10",
                      "100",
                      "1000"});
-            comboBoxIncrementSteps.SelectedItem = "10";
+            comboBoxIncrementSteps.SelectedItem = "1";
             comboBoxIncrementSteps.TabIndex = 4;
             comboBoxIncrementSteps.SelectedIndexChanged += ComboboxIncrementSteps_SelectedIndexChanged;
             comboBoxIncrementSteps.SelectedIndexChanged += new EventHandler(TextValueChanged);
 
             labelStartnumber.Text = "Start number";
-            labelStartnumber.Location = new Point(100, 105);
-            labelStartnumber.Size = new Size(80, 14);
+            labelStartnumber.Location = new Point((positionControlPos.Width / 2) - 26, 105);
+            labelStartnumber.Size = new Size(70, 14);
 
-            numericUpDownStartWith.Location = new Point(100, 120);
-            numericUpDownStartWith.Size = new Size(70, 45);
+            numericUpDownStartWith.Location = new Point((positionControlPos.Width / 2) - 26, 120);
+            numericUpDownStartWith.Size = new Size(70, 85);
             numericUpDownStartWith.Minimum = 1;
             numericUpDownStartWith.Maximum = 1000;
             numericUpDownStartWith.Increment = 1;
             numericUpDownStartWith.DecimalPlaces = 0;
-            numericUpDownStartWith.Value = 10;
+            numericUpDownStartWith.Value = 1;
             numericUpDownStartWith.DecimalPlaces = 0;
             numericUpDownStartWith.TabIndex = 5;
             numericUpDownStartWith.ValueChanged += new EventHandler(TextValueChanged);
 
+            labelColor.Text = "Color";
+            labelColor.Location = new Point(positionControlPos.Width - 62, 105);
+            labelColor.Size = new Size(70, 14);
+
+            buttonColor.Location = new Point(positionControlPos.Width - 62, 119);
+            buttonColor.Name = "buttonnColor";
+            buttonColor.Size = new Size(70, 23);
+            buttonColor.TabIndex = 6;
+            buttonColor.UseVisualStyleBackColor = true;
+            buttonColor.BackColor = Color.FromArgb(255, 255, 192);
+            buttonColor.Click += new System.EventHandler(buttonColor_Click);
+
+
+            labelClipStandard.Text = "Clipping Standard Color";
+            labelClipStandard.Location = new Point(8, 150);
+            labelClipStandard.Size = new Size(70, 14);
+
             labelFirstlabelname.Text = "First label name: ";
-            labelFirstlabelname.Location = new Point(8, 155);
+            labelFirstlabelname.Location = new Point(8, 255);
             labelFirstlabelname.Size = new Size(90, 14);
 
-            labelResultname.Location = new Point(95, 155);
+            labelResultname.Location = new Point(95, 255);
             labelResultname.Size = new Size(80, 14);
-            labelResultname.Text = comboBoxPrefix.Text + numericUpDownStartWith.Value + textBoxSuffix.Text;
+            labelResultname.Text = textBoxPrefix.Text + numericUpDownStartWith.Value + textBoxSuffix.Text;
 
-            buttonClear.Location = new Point(tw_width - 170, 200);
+            buttonClear.Location = new Point(tw_width - 170, 300);
             buttonClear.Size = new Size(53, 25);
-            buttonClear.Text = "Clear";
+            buttonClear.Text = "Reset";
             buttonClear.FlatStyle = FlatStyle.Flat;
             buttonClear.UseVisualStyleBackColor = true;
-            buttonClear.Click += new EventHandler(btn_clear_clicked);
+            buttonClear.Click += new EventHandler(btn_reset_clicked);
 
-            buttonCreate.Location = new Point(tw_width - 110, 200);
+            buttonCreate.Location = new Point(tw_width - 110, 300);
             buttonCreate.Size = new Size(53, 25);
             buttonCreate.Text = "Create";
             buttonCreate.FlatStyle = FlatStyle.Flat;
             buttonCreate.UseVisualStyleBackColor = true;
             buttonCreate.Click += new EventHandler(btn_create_clicked);
 
-            buttonClose.Location = new Point(tw_width - 50, 200);
+            buttonClose.Location = new Point(tw_width - 50, 300);
             buttonClose.Size = new Size(53, 25);
             buttonClose.Text = "Close";
             buttonClose.FlatStyle = FlatStyle.Flat;
@@ -239,23 +259,26 @@ namespace Test_AutoMarkUp
             base.Caption = "Auto MarkUp Tool";
             base.Controls.Add(positionControlPos);
             base.Controls.Add(labelPrefix);
-            base.Controls.Add(comboBoxPrefix);
+            base.Controls.Add(textBoxPrefix);
             base.Controls.Add(labelSuffix);
             base.Controls.Add(textBoxSuffix);
             base.Controls.Add(labelNumIncrements);
             base.Controls.Add(comboBoxIncrementSteps);
             base.Controls.Add(labelStartnumber);
+            base.Controls.Add(labelColor);
+            base.Controls.Add(buttonColor);
             base.Controls.Add(numericUpDownStartWith);
-            base.Controls.Add(labelFirstlabelname);
+            base.Controls.Add(labelClipStandard);
+            base.Controls.Add(labelFirstlabelname); 
             base.Controls.Add(labelResultname);
             base.Controls.Add(buttonClear);
             base.Controls.Add(buttonCreate);
             base.Controls.Add(buttonClose);
             base.Name = "frmAutoMarkUpBuilder";
-            base.Size = new System.Drawing.Size(242, 240);
+            base.Size = new System.Drawing.Size(242, 340);
             positionControlPos.ResumeLayout(false);
-            groupBox.ResumeLayout(false);
-            groupBox.PerformLayout();
+            //groupBox.ResumeLayout(false);
+            //groupBox.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -274,17 +297,26 @@ namespace Test_AutoMarkUp
 
         private void TextValueChanged(object sender, EventArgs e)
         {
-            labelResultname.Text = comboBoxPrefix.Text + numericUpDownStartWith.Value + textBoxSuffix.Text;
+            labelResultname.Text = textBoxPrefix.Text + numericUpDownStartWith.Value + textBoxSuffix.Text;
         }
 
 
-        private void btn_clear_clicked(object sender, EventArgs e)
+        private void buttonColor_Click(object sender, EventArgs e)
+        {
+            colorDialogColor.ShowDialog();
+            buttonColor.BackColor = colorDialogColor.Color;
+
+            //RedrawGfx();
+        }
+
+        private void btn_reset_clicked(object sender, EventArgs e)
         {
             positionControlPos.Value = new Vector3(0, 0, 0);
-            comboBoxPrefix.SelectedItem = "p_";
+            textBoxPrefix.Text = "";
             textBoxSuffix.Text = "";
-            comboBoxIncrementSteps.SelectedItem = "10";
-            numericUpDownStartWith.Value = 10;
+            comboBoxIncrementSteps.SelectedItem = "1";
+            numericUpDownStartWith.Value = 1;
+            _markNumber = 0;
         }
 
         private void btn_create_clicked(object sender, EventArgs e)
