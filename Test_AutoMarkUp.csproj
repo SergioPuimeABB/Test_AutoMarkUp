@@ -88,11 +88,61 @@
     </Compile>
     <Compile Include="main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Test_AutoMarkUp.rsaddin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BigMetNut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Grommet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Klammer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Metnut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Nut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Panzer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PlasticNut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RetClip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SClip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SmallSnapClip.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Snap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TrimClipPlastic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TrimFastener.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

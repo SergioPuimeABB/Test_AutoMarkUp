@@ -22,12 +22,11 @@ namespace Test_AutoMarkUp
 
         private PositionControl positionControlPos;
 
-        //private ComboBox comboBoxPrefix;
-
         private TextBox textBoxPrefix;
         private TextBox textBoxSuffix;
         
         private ComboBox comboBoxIncrementSteps;
+        private ComboBox comboBoxClipStandard;
 
         private NumericUpDown numericUpDownStartWith;
 
@@ -46,8 +45,8 @@ namespace Test_AutoMarkUp
 
         private Button buttonColor;
         private ColorDialog colorDialogColor;
-                
-        //private GroupBox groupBox;
+
+        private PictureBox pictureboxNutImage;
 
         public frmAutoMarkUpBuilder()
         {
@@ -85,6 +84,19 @@ namespace Test_AutoMarkUp
             markupWText.Transform.Translation = position;
             markupWText.Text = GenerateName();
             markupWText.Name = markupWText.Text;
+            markupWText.BackgroundColor = buttonColor.BackColor;
+            Logger.AddMessage(new LogMessage("->" + comboBoxClipStandard.SelectedItem.ToString() + "<-"));
+            switch (comboBoxClipStandard.SelectedItem.ToString())
+            {
+                case "Small Snap Clip":
+                    markupWText.TextColor = Color.White;
+                    break;
+                case "Klammer":
+                    markupWText.TextColor = Color.White;
+                    break;
+                case "":
+                    break;
+            }
             station.Markups.Add(markupWText);
             _markNumber += 1 * Increments();
         }
@@ -125,15 +137,15 @@ namespace Test_AutoMarkUp
             labelClipStandard = new Label();
             labelResultname = new Label();
             comboBoxIncrementSteps = new ComboBox();
+            comboBoxClipStandard = new ComboBox();
+            pictureboxNutImage = new PictureBox();
             numericUpDownStartWith = new NumericUpDown();
-            //groupBox = new GroupBox();
             buttonClear = new Button();
             buttonCreate = new Button();
             buttonClose = new Button();
 
 
             positionControlPos.SuspendLayout();
-            //groupBox.SuspendLayout();
             SuspendLayout();
 
 
@@ -218,8 +230,37 @@ namespace Test_AutoMarkUp
 
 
             labelClipStandard.Text = "Clipping Standard Color";
-            labelClipStandard.Location = new Point(8, 150);
-            labelClipStandard.Size = new Size(70, 14);
+            labelClipStandard.Location = new Point(8, 176);
+            labelClipStandard.Size = new Size(150, 14);
+
+
+            comboBoxClipStandard.Location = new Point(8, 196);
+            comboBoxClipStandard.Size = new Size(150, 44);
+            comboBoxClipStandard.DropDownWidth = 70;
+            comboBoxClipStandard.Items.AddRange(new object[]
+                    {"Panzer",
+                     "Snap",
+                     "Grommet",
+                     "Metnut/C_Nut",
+                     "Nut",
+                     "Big MetNut",
+                     "Trim Fastener",
+                     "Small Snap Clip",
+                     "Ret Clip",
+                     "S-Clip",
+                     "Klammer",
+                     "TrimClip Plastic",
+                     "Plastic Nut"});
+            comboBoxClipStandard.SelectedItem = "0";
+            comboBoxClipStandard.TabIndex = 7;
+            comboBoxClipStandard.SelectedIndexChanged += new EventHandler(ClipValueChanged);
+
+            pictureboxNutImage.Location = new Point(172, 150);
+            pictureboxNutImage.Name = "pictureboxNutImage";
+            pictureboxNutImage.Size = new Size(68, 68);
+            pictureboxNutImage.BorderStyle = BorderStyle.None;
+            pictureboxNutImage.Image = null;
+            pictureboxNutImage.TabStop = false;
 
             labelFirstlabelname.Text = "First label name: ";
             labelFirstlabelname.Location = new Point(8, 255);
@@ -234,6 +275,7 @@ namespace Test_AutoMarkUp
             buttonClear.Text = "Reset";
             buttonClear.FlatStyle = FlatStyle.Flat;
             buttonClear.UseVisualStyleBackColor = true;
+            buttonClear.TabIndex = 8;
             buttonClear.Click += new EventHandler(btn_reset_clicked);
 
             buttonCreate.Location = new Point(tw_width - 110, 300);
@@ -241,6 +283,7 @@ namespace Test_AutoMarkUp
             buttonCreate.Text = "Create";
             buttonCreate.FlatStyle = FlatStyle.Flat;
             buttonCreate.UseVisualStyleBackColor = true;
+            buttonCreate.TabIndex = 9;
             buttonCreate.Click += new EventHandler(btn_create_clicked);
 
             buttonClose.Location = new Point(tw_width - 50, 300);
@@ -248,13 +291,14 @@ namespace Test_AutoMarkUp
             buttonClose.Text = "Close";
             buttonClose.FlatStyle = FlatStyle.Flat;
             buttonClose.UseVisualStyleBackColor = true;
+            buttonClose.TabIndex = 10;
             buttonClose.Click += new EventHandler(btn_close_clicked);
 
 
+            AutoScroll = true;
             base.AdjustableHeight = true;
             base.AutoScaleDimensions = new System.Drawing.SizeF(6f, 13f);
             base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            AutoScroll = true;
             base.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             base.Caption = "Auto MarkUp Tool";
             base.Controls.Add(positionControlPos);
@@ -269,6 +313,8 @@ namespace Test_AutoMarkUp
             base.Controls.Add(buttonColor);
             base.Controls.Add(numericUpDownStartWith);
             base.Controls.Add(labelClipStandard);
+            base.Controls.Add(comboBoxClipStandard);
+            base.Controls.Add(pictureboxNutImage);
             base.Controls.Add(labelFirstlabelname); 
             base.Controls.Add(labelResultname);
             base.Controls.Add(buttonClear);
@@ -277,8 +323,6 @@ namespace Test_AutoMarkUp
             base.Name = "frmAutoMarkUpBuilder";
             base.Size = new System.Drawing.Size(242, 340);
             positionControlPos.ResumeLayout(false);
-            //groupBox.ResumeLayout(false);
-            //groupBox.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -305,8 +349,69 @@ namespace Test_AutoMarkUp
         {
             colorDialogColor.ShowDialog();
             buttonColor.BackColor = colorDialogColor.Color;
+        }
 
-            //RedrawGfx();
+        private void ClipValueChanged(object sender, EventArgs e)
+        {
+            switch (comboBoxClipStandard.SelectedItem.ToString())
+            {
+                case "Panzer":
+                    buttonColor.BackColor = Color.FromArgb(128, 128, 0);
+                    pictureboxNutImage.BorderStyle = BorderStyle.FixedSingle;
+                    pictureboxNutImage.Image = Properties.Resources.Panzer;
+                    break;
+                case "Snap":
+                    buttonColor.BackColor = Color.FromArgb(255, 127, 0);
+                    pictureboxNutImage.BorderStyle = BorderStyle.FixedSingle;
+                    pictureboxNutImage.Image = Properties.Resources.Snap;
+                    break;
+                case "Grommet":
+                    buttonColor.BackColor = Color.FromArgb(0, 0, 255);
+                    pictureboxNutImage.Image = Properties.Resources.Grommet;
+                    break;
+                case "Metnut/C_Nut":
+                    buttonColor.BackColor = Color.FromArgb(255, 0, 255);
+                    pictureboxNutImage.Image = Properties.Resources.Metnut;
+                    break;
+                case "Nut":
+                    buttonColor.BackColor = Color.FromArgb(247, 191, 190);
+                    pictureboxNutImage.Image = Properties.Resources.Nut;
+                    break;
+                case "Big MetNut":
+                    buttonColor.BackColor = Color.FromArgb(104, 36, 109);
+                    pictureboxNutImage.Image = Properties.Resources.BigMetNut;
+                    break;
+                case "Trim Fastener":
+                    buttonColor.BackColor = Color.FromArgb(255, 215, 0);
+                    pictureboxNutImage.Image = Properties.Resources.TrimFastener;
+                    break;
+                case "Small Snap Clip":
+                    buttonColor.BackColor = Color.FromArgb(0, 0, 0);
+                    pictureboxNutImage.Image = Properties.Resources.SmallSnapClip;
+                    break;
+                case "Ret Clip":
+                    buttonColor.BackColor = Color.FromArgb(245, 245, 220);
+                    pictureboxNutImage.Image = Properties.Resources.RetClip;
+                    break;
+                case "S-Clip":
+                    buttonColor.BackColor = Color.FromArgb(150, 75, 0);
+                    pictureboxNutImage.Image = Properties.Resources.SClip;
+                    break;
+                case "Klammer":
+                    buttonColor.BackColor = Color.FromArgb(128, 0, 32);
+                    pictureboxNutImage.Image = Properties.Resources.Klammer;
+                    break;
+                case "TrimClip Plastic":
+                    buttonColor.BackColor = Color.FromArgb(195, 176, 145);
+                    pictureboxNutImage.Image = Properties.Resources.TrimClipPlastic;
+                    break;
+                case "Plastic Nut":
+                    buttonColor.BackColor = Color.FromArgb(208, 255, 20);
+                    pictureboxNutImage.Image = Properties.Resources.PlasticNut;
+                    break;
+                default:
+                    break;
+        }
         }
 
         private void btn_reset_clicked(object sender, EventArgs e)
@@ -316,6 +421,10 @@ namespace Test_AutoMarkUp
             textBoxSuffix.Text = "";
             comboBoxIncrementSteps.SelectedItem = "1";
             numericUpDownStartWith.Value = 1;
+            buttonColor.BackColor = Color.FromArgb(255, 255, 192);
+            comboBoxClipStandard.ResetText();
+            pictureboxNutImage.Image = null;
+            pictureboxNutImage.BorderStyle = BorderStyle.None;
             _markNumber = 0;
         }
 

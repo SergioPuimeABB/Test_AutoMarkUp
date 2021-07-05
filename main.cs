@@ -23,7 +23,7 @@ namespace Test_AutoMarkUp
         // This is the entry point which will be called when the Add-in is loaded
         public static void AddinMain()
         {
-            Logger.AddMessage(new LogMessage("AutoMarkUps Add-in loaded ... 2021.05.03  10:58 ", "AutoMarkUps Add-in"));
+            Logger.AddMessage(new LogMessage("AutoMarkUps Add-in loaded ... 2021.07.05  14:00 ", "AutoMarkUps Add-in"));
 
             if (rgAMU == null)
             {
@@ -40,10 +40,10 @@ namespace Test_AutoMarkUp
             galleryAMU.GalleryTextPosition = GalleryTextPosition.Below;
             galleryAMU.GalleryItemSize = new Size(96, 96);
             //galleryEB.Image = Resources.EquipmentBuilder;
-            galleryAMU.HelpText = "For creating station equipment.";
-            CommandBarHeader control = new CommandBarHeader("Marks & Walls");
+            //galleryAMU.HelpText = "For creating station equipment.";
+            CommandBarHeader control = new CommandBarHeader("Marks");
             galleryAMU.GalleryControls.Add(control);
-            btnAMU = new CommandBarButton("AutoMarkUp", "Net");
+            btnAMU = new CommandBarButton("AutoMarkUp", "AutoMarkUp");
             //btnFB.Image = Resources.NetFence_96x96;
             galleryAMU.GalleryControls.Add(btnAMU);
 
