@@ -48,6 +48,8 @@ namespace Test_AutoMarkUp
 
         private PictureBox pictureboxNutImage;
 
+        //private Markup markupWText;
+
         public frmAutoMarkUpBuilder()
         {
             InitializeComponent();
@@ -70,7 +72,7 @@ namespace Test_AutoMarkUp
 
         private void GraphicPicker_GraphicPick(object sender, GraphicPickEventArgs e)
         {
-            Logger.AddMessage(new LogMessage("GraphicPicker_GraphicPick"));
+            Logger.AddMessage(new LogMessage("GraphicPicker_GraphicPick ."));
 
             CreateMarkUp(e.PickedPosition);
             _firstClick = false;
@@ -85,16 +87,29 @@ namespace Test_AutoMarkUp
             markupWText.Text = GenerateName();
             markupWText.Name = markupWText.Text;
             markupWText.BackgroundColor = buttonColor.BackColor;
-            Logger.AddMessage(new LogMessage("->" + comboBoxClipStandard.SelectedItem.ToString() + "<-"));
-            switch (comboBoxClipStandard.SelectedItem.ToString())
+            markupWText.TextColor = Color.Black;
+            switch (comboBoxClipStandard.SelectedItem)
             {
+                case "Grommet":
+                    markupWText.TextColor = Color.White;
+                    break;
+                case "Big MetNut":
+                    markupWText.TextColor = Color.White;
+                    break;
                 case "Small Snap Clip":
+                    markupWText.TextColor = Color.White;
+                    break;
+                case "S-Clip":
                     markupWText.TextColor = Color.White;
                     break;
                 case "Klammer":
                     markupWText.TextColor = Color.White;
                     break;
                 case "":
+                    markupWText.TextColor = Color.Black;
+                    break;
+                default:
+                    markupWText.TextColor = Color.Black;
                     break;
             }
             station.Markups.Add(markupWText);
@@ -143,6 +158,7 @@ namespace Test_AutoMarkUp
             buttonClear = new Button();
             buttonCreate = new Button();
             buttonClose = new Button();
+            //markupWText = new Markup();
 
 
             positionControlPos.SuspendLayout();
@@ -353,7 +369,7 @@ namespace Test_AutoMarkUp
 
         private void ClipValueChanged(object sender, EventArgs e)
         {
-            switch (comboBoxClipStandard.SelectedItem.ToString())
+            switch (comboBoxClipStandard.SelectedItem)
             {
                 case "Panzer":
                     buttonColor.BackColor = Color.FromArgb(128, 128, 0);
@@ -422,7 +438,8 @@ namespace Test_AutoMarkUp
             comboBoxIncrementSteps.SelectedItem = "1";
             numericUpDownStartWith.Value = 1;
             buttonColor.BackColor = Color.FromArgb(255, 255, 192);
-            comboBoxClipStandard.ResetText();
+            //comboBoxClipStandard.ResetText();
+            comboBoxClipStandard.SelectedItem = null;
             pictureboxNutImage.Image = null;
             pictureboxNutImage.BorderStyle = BorderStyle.None;
             _markNumber = 0;
