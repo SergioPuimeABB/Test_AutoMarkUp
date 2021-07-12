@@ -1,8 +1,5 @@
 ﻿
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using ABB.Robotics.Math;
@@ -10,7 +7,6 @@ using ABB.Robotics.RobotStudio;
 using ABB.Robotics.RobotStudio.Environment;
 using ABB.Robotics.RobotStudio.Stations;
 using ABB.Robotics.RobotStudio.Stations.Forms;
-using RobotStudio.API.Internal.Forms;
 
 namespace Test_AutoMarkUp
 {
@@ -158,12 +154,9 @@ namespace Test_AutoMarkUp
             buttonClear = new Button();
             buttonCreate = new Button();
             buttonClose = new Button();
-            //markupWText = new Markup();
-
 
             positionControlPos.SuspendLayout();
             SuspendLayout();
-
 
             positionControlPos.ErrorProviderControl = null;
             positionControlPos.ExpressionErrorString = "Bad Expression";
@@ -244,11 +237,9 @@ namespace Test_AutoMarkUp
             buttonColor.BackColor = Color.FromArgb(255, 255, 192);
             buttonColor.Click += new System.EventHandler(buttonColor_Click);
 
-
             labelClipStandard.Text = "Clipping Standard Color";
             labelClipStandard.Location = new Point(8, 176);
             labelClipStandard.Size = new Size(150, 14);
-
 
             comboBoxClipStandard.Location = new Point(8, 196);
             comboBoxClipStandard.Size = new Size(150, 44);
@@ -309,7 +300,6 @@ namespace Test_AutoMarkUp
             buttonClose.UseVisualStyleBackColor = true;
             buttonClose.TabIndex = 10;
             buttonClose.Click += new EventHandler(btn_close_clicked);
-
 
             AutoScroll = true;
             base.AdjustableHeight = true;
@@ -438,7 +428,6 @@ namespace Test_AutoMarkUp
             comboBoxIncrementSteps.SelectedItem = "1";
             numericUpDownStartWith.Value = 1;
             buttonColor.BackColor = Color.FromArgb(255, 255, 192);
-            //comboBoxClipStandard.ResetText();
             comboBoxClipStandard.SelectedItem = null;
             pictureboxNutImage.Image = null;
             pictureboxNutImage.BorderStyle = BorderStyle.None;

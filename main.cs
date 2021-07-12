@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using ABB.Robotics.Math;
 using ABB.Robotics.RobotStudio;
 using ABB.Robotics.RobotStudio.Environment;
 using ABB.Robotics.RobotStudio.Stations;
 using ABB.Robotics.RobotStudio.Stations.Forms;
-
-using Test_AutoMarkUp;
 
 
 namespace Test_AutoMarkUp
